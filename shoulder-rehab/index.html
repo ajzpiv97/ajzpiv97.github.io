@@ -189,6 +189,15 @@ body{background:#0a0e14;color:#e8eaf0;font-family:'Outfit',sans-serif;font-weigh
 .callout.orange{background:rgba(251,146,60,.06);border-color:rgba(251,146,60,.15);color:#fdba74}
 .callout.red{background:rgba(248,113,113,.06);border-color:rgba(248,113,113,.15);color:#fca5a5}
 .hidden{display:none}
+
+/* WEEK SELECTOR */
+.week-selector{margin-top:16px}
+.week-selector-lbl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;color:#34d399;text-transform:uppercase;margin-bottom:8px;opacity:.7}
+.week-btns{display:flex;gap:6px;flex-wrap:wrap}
+.wbtn{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:#5a6a7a;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;padding:5px 12px;border-radius:6px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.wbtn:hover{border-color:rgba(52,211,153,.3);color:#8fa0b0}
+.wbtn.active{background:rgba(52,211,153,.1);border-color:rgba(52,211,153,.3);color:#34d399}
+.ph-done{background:rgba(52,211,153,.06);color:#059669;border:1px solid rgba(52,211,153,.15)}
 </style>
 </head>
 <body>
@@ -199,7 +208,16 @@ body{background:#0a0e14;color:#e8eaf0;font-family:'Outfit',sans-serif;font-weigh
   <p class="hero-sub">17 exercises + ice &amp; heat protocols for right anterior labrum tear (HSS MRI, 2021) and acute left shoulder hyperextension (golf, March 2026).</p>
   <div class="status-row">
     <div class="pill"><span class="dot dot-r"></span>Right · Post-PT · Partial Labrum Tear · Mild (1–3/10)</div>
-    <div class="pill"><span class="dot dot-l"></span>Left · Acute Hyperextension · Golf · Weeks 1–2</div>
+    <div class="pill"><span class="dot dot-l"></span>Left · Acute Hyperextension · Golf · <span id="hero-week-label">Weeks 1–2</span></div>
+  </div>
+  <div class="week-selector">
+    <div class="week-selector-lbl">Current Week</div>
+    <div class="week-btns" id="week-btns">
+      <button class="wbtn" onclick="selectWeek(0,this)">Wk 1–2</button>
+      <button class="wbtn" onclick="selectWeek(1,this)">Wk 3–4</button>
+      <button class="wbtn" onclick="selectWeek(2,this)">Wk 5–6</button>
+      <button class="wbtn" onclick="selectWeek(3,this)">Wk 7+</button>
+    </div>
   </div>
 </div>
 
@@ -256,6 +274,9 @@ body{background:#0a0e14;color:#e8eaf0;font-family:'Outfit',sans-serif;font-weigh
 const TOTAL = 17;
 let completed = {};
 let activeTabId = 'warmup';
+let currentWeek = parseInt(localStorage.getItem('rehab_week') || '0', 10);
+
+const WEEK_LABELS = ['Weeks 1–2', 'Weeks 3–4', 'Weeks 5–6', 'Week 7+'];
 
 /* ---- DATA ---- */
 const EXERCISES = {
@@ -362,10 +383,10 @@ const AVOID_ITEMS=[
 ];
 
 const PHASES=[
-  {badge:'NOW',title:'Weeks 1–2 (Current)',active:true,items:['Pendulum swings 3–5× daily, 2 minutes','Isometric IR & ER at 0° abduction — 50% effort, 5-sec holds, 2×10','Scapular squeezes — bilateral','Ice 15–20 min after activity (see Ice tab)','No resistance bands/dumbbells for LEFT shoulder','Cross-body stretch only if completely pain-free','Dead bugs and Pallof presses — fully safe now']},
-  {badge:'SOON',title:'Weeks 3–4',active:false,items:['Add light band ER/IR at 0° for left shoulder','Begin wall slides to pain-free range','Bodyweight-only prone Y and T raises','Modified cross-body stretch with wall stabilization','Transition to contrast therapy after exercise (see Contrast tab)']},
-  {badge:'LATER',title:'Weeks 5–6',active:false,items:['Progress left shoulder to match right protocol at lighter loads','Add full can raises at 60°','Push-up plus from knees','Begin modified sleeper stretch if tolerated','Increase band resistance by one level','Switch to pre-exercise heat for left shoulder (see Heat tab)']},
-  {badge:'GOAL',title:'Week 7+',active:false,items:['Full bilateral protocol at matched intensity','Progress loads per right shoulder program','Evaluate readiness for return to golf swing','Full heat pre-exercise, contrast post-exercise as standard']},
+  {title:'Weeks 1–2',items:['Pendulum swings 3–5× daily, 2 minutes','Isometric IR & ER at 0° abduction — 50% effort, 5-sec holds, 2×10','Scapular squeezes — bilateral','Ice 15–20 min after activity (see Ice tab)','No resistance bands/dumbbells for LEFT shoulder','Cross-body stretch only if completely pain-free','Dead bugs and Pallof presses — fully safe now']},
+  {title:'Weeks 3–4',items:['Add light band ER/IR at 0° for left shoulder','Begin wall slides to pain-free range','Bodyweight-only prone Y and T raises','Modified cross-body stretch with wall stabilization','Transition to contrast therapy after exercise (see Contrast tab)']},
+  {title:'Weeks 5–6',items:['Progress left shoulder to match right protocol at lighter loads','Add full can raises at 60°','Push-up plus from knees','Begin modified sleeper stretch if tolerated','Increase band resistance by one level','Switch to pre-exercise heat for left shoulder (see Heat tab)']},
+  {title:'Week 7+',items:['Full bilateral protocol at matched intensity','Progress loads per right shoulder program','Evaluate readiness for return to golf swing','Full heat pre-exercise, contrast post-exercise as standard']},
 ];
 
 const RED_IMMEDIATE=['Visible deformity (flattened deltoid, prominent acromion) — possible dislocation','Complete inability to raise arm — possible full-thickness cuff tear or dislocation','Numbness, tingling, or weakness radiating into arm or hand — axillary nerve or brachial plexus injury','A distinct "pop" or tearing sensation followed by immediate significant weakness','Shoulder "slips" or feels "loose" during movement — subluxation or frank instability','Pale, cool, or discolored hand or forearm — possible vascular compromise'];
@@ -609,10 +630,17 @@ function renderSection(id){
 
   if(id==='phase') return `
     <div class="section-header"><div class="section-tag tag-green">Left Shoulder · Progressive Loading</div><h2 class="section-title">Phased return protocol</h2><p class="section-desc">The acute left shoulder follows a criteria-based advancement model (Wilk et al. 2006) — progress when pain is minimal, ROM is adequate, and strength milestones are met. Not on a fixed calendar. Ice and heat protocols evolve with each phase.</p></div>
-    ${PHASES.map(p=>`<div class="phase-card ${p.active?'phase-active':'phase-upcoming'}">
-      <div class="ph-row"><span class="ph-badge ${p.active?'ph-now':'ph-soon'}">${p.badge}</span><span class="ph-title">${p.title}</span></div>
-      <div>${p.items.map(i=>`<div class="ph-item"><span class="ph-dot" style="background:${p.active?'#34d399':'#3a4a5a'}"></span>${i}</div>`).join('')}</div>
-    </div>`).join('')}`;
+    ${PHASES.map((p,i)=>{
+      const isActive=i===currentWeek;
+      const isPast=i<currentWeek;
+      const badge=isActive?'NOW':isPast?'DONE':i===currentWeek+1?'SOON':i===currentWeek+2?'LATER':'GOAL';
+      const badgeClass=isActive?'ph-now':isPast?'ph-done':'ph-soon';
+      const dotColor=isActive?'#34d399':isPast?'#059669':'#3a4a5a';
+      return `<div class="phase-card ${isActive?'phase-active':'phase-upcoming'}">
+        <div class="ph-row"><span class="ph-badge ${badgeClass}">${badge}</span><span class="ph-title">${p.title}${isActive?' · Current':''}</span></div>
+        <div>${p.items.map(item=>`<div class="ph-item"><span class="ph-dot" style="background:${dotColor}"></span>${item}</div>`).join('')}</div>
+      </div>`;
+    }).join('')}`;
 
   if(id==='flags') return `
     <div class="section-header"><div class="section-tag tag-red">Left Shoulder · Medical Alert</div><h2 class="section-title">When to seek evaluation</h2><p class="section-desc">Given the traumatic mechanism and your confirmed contralateral labral tear history, an MRI arthrogram is the appropriate imaging study if symptoms persist beyond 2–3 weeks of conservative management.</p></div>
@@ -681,7 +709,20 @@ function updateProgress(){
   document.getElementById('prog-fill').style.width=`${(count/TOTAL)*100}%`;
 }
 
+function selectWeek(idx, btn){
+  currentWeek = idx;
+  localStorage.setItem('rehab_week', idx);
+  document.querySelectorAll('.wbtn').forEach((b,i)=>b.classList.toggle('active',i===idx));
+  const heroLabel = document.getElementById('hero-week-label');
+  if(heroLabel) heroLabel.textContent = WEEK_LABELS[idx];
+  if(activeTabId==='phase') document.getElementById('content').innerHTML=renderSection('phase');
+}
+
 // INIT
+currentWeek = parseInt(localStorage.getItem('rehab_week') || '0', 10);
+document.querySelectorAll('.wbtn').forEach((b,i)=>b.classList.toggle('active',i===currentWeek));
+const heroWeekLabel = document.getElementById('hero-week-label');
+if(heroWeekLabel) heroWeekLabel.textContent = WEEK_LABELS[currentWeek];
 document.getElementById('content').innerHTML=renderSection('warmup');
 </script>
 </body>
