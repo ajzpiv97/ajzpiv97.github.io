@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Bilateral Shoulder Rehab · Complete Protocol</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0e14;color:#e8eaf0;font-family:'Outfit',sans-serif;font-weight:300;min-height:100vh}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#0d1117 0%,#0f1923 50%,#071a12 100%);border-bottom:1px solid rgba(52,211,153,.15);padding:40px 24px 32px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-60px;right:-60px;width:320px;height:320px;background:radial-gradient(circle,rgba(52,211,153,.07) 0%,transparent 70%);pointer-events:none}
+.hero-label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:3px;color:#34d399;text-transform:uppercase;margin-bottom:12px;opacity:.8}
+.hero-title{font-family:'DM Serif Display',serif;font-size:clamp(26px,5vw,40px);line-height:1.1;color:#f0f4f8;margin-bottom:14px}
+.hero-title em{font-style:italic;color:#34d399}
+.hero-sub{font-size:13px;color:#8b9cad;line-height:1.6;max-width:540px}
+.status-row{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.pill{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:100px;padding:5px 13px;font-size:11px;font-family:'DM Mono',monospace}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.dot-r{background:#f59e0b;box-shadow:0 0 6px #f59e0b}
+.dot-l{background:#f87171;box-shadow:0 0 6px #f87171}
+
+/* PROGRESS */
+.prog-wrap{margin:0 20px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.prog-meta{display:flex;justify-content:space-between;margin-bottom:8px;font-family:'DM Mono',monospace;font-size:11px;color:#5a6a7a}
+.prog-meta span:last-child{color:#34d399}
+.prog-track{height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,#059669,#34d399);border-radius:2px;transition:width .4s}
+
+/* TIMER */
+.timer-bar{display:flex;align-items:center;gap:14px;background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);border-radius:12px;padding:12px 18px;margin:16px 20px 0;flex-wrap:wrap}
+.timer-lbl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;color:#34d399;text-transform:uppercase;white-space:nowrap}
+.timer-segs{display:flex;gap:6px;flex:1;flex-wrap:wrap}
+.tseg{flex:1;min-width:55px;background:rgba(52,211,153,.1);border-radius:4px;padding:3px 7px;text-align:center;font-size:10px;color:#6ee7b7;font-family:'DM Mono',monospace}
+.total-t{font-family:'DM Mono',monospace;font-size:12px;color:#34d399;white-space:nowrap}
+
+/* TABS */
+.tab-group-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:#3a4a5a;text-transform:uppercase;padding:8px 20px 4px;background:#0a0e14}
+.tabs{display:flex;overflow-x:auto;border-bottom:1px solid rgba(255,255,255,.06);padding:0 16px;background:#0d1117;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{background:none;border:none;color:#5a6a7a;font-family:'Outfit',sans-serif;font-size:11px;font-weight:500;letter-spacing:1px;padding:14px 12px 12px;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;text-transform:uppercase}
+.tab:hover{color:#a0b0c0}
+.tab.active-rehab{color:#34d399;border-bottom-color:#34d399}
+.tab.active-ice{color:#60a5fa;border-bottom-color:#60a5fa}
+.tab.active-heat{color:#fb923c;border-bottom-color:#fb923c}
+.tab.active-contrast{color:#a78bfa;border-bottom-color:#a78bfa}
+.tab.active-avoid{color:#f87171;border-bottom-color:#f87171}
+.tab.active-phase{color:#34d399;border-bottom-color:#34d399}
+.tab.active-flags{color:#f87171;border-bottom-color:#f87171}
+
+/* CONTENT */
+.content{padding:24px 20px;max-width:740px;margin:0 auto}
+.section-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:5px;opacity:.7}
+.tag-green{color:#34d399}
+.tag-blue{color:#60a5fa}
+.tag-orange{color:#fb923c}
+.tag-purple{color:#a78bfa}
+.tag-red{color:#f87171}
+.section-title{font-family:'DM Serif Display',serif;font-size:22px;color:#f0f4f8;margin-bottom:6px}
+.section-desc{font-size:13px;color:#6a7d8e;line-height:1.6}
+.section-header{margin-bottom:20px}
+
+/* EXERCISE CARDS */
+.ex-card{background:#0d1117;border:1px solid rgba(255,255,255,.07);border-radius:14px;margin-bottom:11px;overflow:hidden;transition:border-color .2s}
+.ex-card:hover{border-color:rgba(52,211,153,.2)}
+.ex-card.done{border-color:rgba(52,211,153,.3);background:rgba(52,211,153,.03)}
+.card-hd{display:flex;align-items:center;gap:13px;padding:14px 16px;cursor:pointer}
+.ex-num{font-family:'DM Mono',monospace;font-size:11px;color:#34d399;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.2);border-radius:6px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.card-tg{flex:1;min-width:0}
+.card-t{font-size:14px;font-weight:500;color:#dde5ef;margin-bottom:4px}
+.card-meta{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.badge{font-family:'DM Mono',monospace;font-size:10px;padding:2px 7px;border-radius:4px}
+.bb{background:rgba(99,179,237,.12);color:#63b3ed;border:1px solid rgba(99,179,237,.2)}
+.br{background:rgba(245,158,11,.12);color:#fbbf24;border:1px solid rgba(245,158,11,.2)}
+.blm{background:rgba(167,139,250,.12);color:#c4b5fd;border:1px solid rgba(167,139,250,.2)}
+.reps-b{font-family:'DM Mono',monospace;font-size:10px;color:#8b9cad;background:rgba(255,255,255,.05);padding:2px 7px;border-radius:4px}
+.card-right{display:flex;align-items:center;gap:9px}
+.chk{width:26px;height:26px;border-radius:50%;border:1.5px solid rgba(255,255,255,.15);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;color:transparent;font-size:13px;flex-shrink:0}
+.chk:hover{border-color:#34d399}
+.chk.checked{background:#34d399;border-color:#34d399;color:#0a0e14}
+.exp-ico{color:#3a4a5a;font-size:17px;transition:transform .2s;flex-shrink:0;user-select:none;line-height:1}
+.exp-ico.open{transform:rotate(180deg)}
+.card-bd{padding:0 16px 16px;border-top:1px solid rgba(255,255,255,.05)}
+.info-block{background:rgba(255,255,255,.02);border-radius:10px;padding:13px;margin-top:12px}
+.ib-lbl{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:#34d399;text-transform:uppercase;margin-bottom:7px;opacity:.7}
+.ib-txt{font-size:12px;color:#8fa0b0;line-height:1.7}
+.src-lbl{display:inline-block;font-family:'DM Mono',monospace;font-size:10px;color:#34d399;opacity:.45;margin-top:7px}
+.lmod-block{background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.15);border-radius:10px;padding:11px 13px;display:flex;gap:9px;align-items:flex-start;margin-top:12px}
+.lmod-txt{font-size:12px;color:#c4b5fd;line-height:1.6}
+
+/* THERMAL CARDS */
+.thermal-card{border-radius:14px;padding:20px;margin-bottom:14px;border:1px solid}
+.ice-card{background:rgba(96,165,250,.04);border-color:rgba(96,165,250,.15)}
+.heat-card{background:rgba(251,146,60,.04);border-color:rgba(251,146,60,.15)}
+.contrast-card{background:rgba(167,139,250,.04);border-color:rgba(167,139,250,.15)}
+.warning-card{background:rgba(248,113,113,.04);border-color:rgba(248,113,113,.15)}
+.thermal-hd{display:flex;align-items:center;gap:12px;margin-bottom:14px;cursor:pointer}
+.thermal-icon{font-size:22px;flex-shrink:0}
+.thermal-title{font-family:'DM Serif Display',serif;font-size:17px}
+.ice-title{color:#93c5fd}
+.heat-title{color:#fdba74}
+.contrast-title{color:#c4b5fd}
+.warn-title{color:#fca5a5}
+.thermal-subtitle{font-size:11px;font-family:'DM Mono',monospace;opacity:.5;margin-top:2px;letter-spacing:.5px}
+.thermal-body{display:none}
+.thermal-body.open{display:block}
+.thermal-exp{margin-left:auto;color:#3a4a5a;font-size:16px;transition:transform .2s;flex-shrink:0}
+.thermal-exp.open{transform:rotate(180deg)}
+
+/* PROTOCOL STEPS */
+.proto-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.proto-step{display:flex;gap:12px;align-items:flex-start;background:rgba(255,255,255,.02);border-radius:10px;padding:12px 14px}
+.step-num{font-family:'DM Mono',monospace;font-size:11px;color:#34d399;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.2);border-radius:5px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.step-num.blue{color:#60a5fa;background:rgba(96,165,250,.1);border-color:rgba(96,165,250,.2)}
+.step-num.orange{color:#fb923c;background:rgba(251,146,60,.1);border-color:rgba(251,146,60,.2)}
+.step-num.purple{color:#a78bfa;background:rgba(167,139,250,.1);border-color:rgba(167,139,250,.2)}
+.step-content{}
+.step-title{font-size:13px;font-weight:500;color:#dde5ef;margin-bottom:3px}
+.step-desc{font-size:12px;color:#6a7d8e;line-height:1.6}
+
+/* MECHANISM GRID */
+.mech-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+@media(max-width:500px){.mech-grid{grid-template-columns:1fr}}
+.mech-item{background:rgba(255,255,255,.02);border-radius:10px;padding:12px}
+.mech-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px;opacity:.6}
+.mech-label.blue{color:#60a5fa}
+.mech-label.orange{color:#fb923c}
+.mech-val{font-size:12px;color:#8fa0b0;line-height:1.5}
+
+/* COMPARISON TABLE */
+.compare-table{width:100%;border-collapse:collapse;margin-bottom:16px;font-size:12px}
+.compare-table th{background:rgba(255,255,255,.04);padding:10px 12px;text-align:left;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:#5a6a7a;text-transform:uppercase;font-weight:500}
+.compare-table td{padding:10px 12px;border-top:1px solid rgba(255,255,255,.04);color:#8fa0b0;vertical-align:top;line-height:1.5}
+.compare-table tr:hover td{background:rgba(255,255,255,.01)}
+.cell-ice{color:#93c5fd}
+.cell-heat{color:#fdba74}
+
+/* CONTRAST CYCLE */
+.cycle-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:14px 0;padding:14px;background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.15);border-radius:12px}
+.cycle-block{padding:6px 12px;border-radius:8px;font-family:'DM Mono',monospace;font-size:11px;text-align:center;white-space:nowrap}
+.cycle-heat{background:rgba(251,146,60,.15);color:#fdba74;border:1px solid rgba(251,146,60,.2)}
+.cycle-cold{background:rgba(96,165,250,.15);color:#93c5fd;border:1px solid rgba(96,165,250,.2)}
+.cycle-arrow{color:#3a4a5a;font-size:14px}
+.cycle-end{background:rgba(96,165,250,.2);color:#93c5fd;border:2px solid rgba(96,165,250,.35)}
+
+/* AVOID & RED FLAGS */
+.avoid-item{display:flex;gap:12px;align-items:flex-start;background:rgba(248,113,113,.04);border:1px solid rgba(248,113,113,.1);border-radius:10px;padding:13px;margin-bottom:9px}
+.avoid-t{font-size:13px;font-weight:500;color:#fca5a5;margin-bottom:3px}
+.avoid-d{font-size:12px;color:#6a7d8e;line-height:1.6}
+.rf-card{background:rgba(248,113,113,.04);border:1px solid rgba(248,113,113,.15);border-radius:14px;padding:18px;margin-bottom:12px}
+.rf-card.warn{background:rgba(251,191,36,.03);border-color:rgba(251,191,36,.2)}
+.rf-hd{display:flex;gap:9px;align-items:center;margin-bottom:14px}
+.rf-title{font-family:'DM Serif Display',serif;font-size:17px;color:#fca5a5}
+.rf-title.warn{color:#fcd34d}
+.rf-list{list-style:none}
+.rf-list li{display:flex;gap:9px;font-size:12px;color:#8fa0b0;line-height:1.5;margin-bottom:8px}
+.rf-list li::before{content:'→';color:#f87171;flex-shrink:0;font-family:'DM Mono',monospace}
+.rf-list.warn li::before{color:#fbbf24}
+
+/* PHASES */
+.phase-card{border-radius:12px;padding:15px;border:1px solid;margin-bottom:11px}
+.phase-active{background:rgba(52,211,153,.05);border-color:rgba(52,211,153,.2)}
+.phase-upcoming{background:rgba(255,255,255,.02);border-color:rgba(255,255,255,.06);opacity:.7}
+.ph-row{display:flex;align-items:center;gap:9px;margin-bottom:10px}
+.ph-badge{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;padding:2px 9px;border-radius:100px}
+.ph-now{background:rgba(52,211,153,.15);color:#34d399;border:1px solid rgba(52,211,153,.3)}
+.ph-soon{background:rgba(255,255,255,.05);color:#5a6a7a}
+.ph-title{font-size:14px;font-weight:500;color:#dde5ef}
+.ph-item{font-size:12px;color:#6a7d8e;display:flex;gap:8px;align-items:flex-start;margin-bottom:5px;line-height:1.5}
+.ph-dot{width:5px;height:5px;border-radius:50%;margin-top:5px;flex-shrink:0}
+
+/* SOURCES */
+.sources-block{margin-top:22px;padding:15px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px}
+.src-hd{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:#34d399;text-transform:uppercase;margin-bottom:10px;opacity:.7}
+.src-row{display:flex;gap:9px;align-items:flex-start;margin-bottom:7px}
+.src-num{font-family:'DM Mono',monospace;font-size:10px;color:#34d399;opacity:.4;flex-shrink:0;margin-top:2px}
+.src-txt{font-size:11px;color:#5a6a7a;line-height:1.5}
+.src-txt a{color:#34d399;opacity:.6;text-decoration:none}
+
+/* MISC */
+.reset-btn{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:#6a7d8e;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:7px 14px;border-radius:8px;cursor:pointer;margin-bottom:16px;transition:all .2s}
+.reset-btn:hover{border-color:rgba(248,113,113,.3);color:#fca5a5}
+.divider{height:1px;background:rgba(255,255,255,.05);margin:18px 0}
+.callout{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);border-radius:10px;padding:12px 14px;font-size:12px;color:#6ee7b7;line-height:1.6;margin-bottom:14px}
+.callout.blue{background:rgba(96,165,250,.06);border-color:rgba(96,165,250,.15);color:#93c5fd}
+.callout.orange{background:rgba(251,146,60,.06);border-color:rgba(251,146,60,.15);color:#fdba74}
+.callout.red{background:rgba(248,113,113,.06);border-color:rgba(248,113,113,.15);color:#fca5a5}
+.hidden{display:none}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">Complete Protocol · Bilateral Shoulder Management</div>
+  <h1 class="hero-title">Shoulder Rehab<br/><em>Evidence-Based Daily System</em></h1>
+  <p class="hero-sub">17 exercises + ice &amp; heat protocols for right anterior labrum tear (HSS MRI, 2021) and acute left shoulder hyperextension (golf, March 2026).</p>
+  <div class="status-row">
+    <div class="pill"><span class="dot dot-r"></span>Right · Post-PT · Partial Labrum Tear · Mild (1–3/10)</div>
+    <div class="pill"><span class="dot dot-l"></span>Left · Acute Hyperextension · Golf · Weeks 1–2</div>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="prog-wrap">
+  <div class="prog-meta"><span>SESSION PROGRESS</span><span id="prog-label">0 / 17 exercises</span></div>
+  <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+</div>
+
+<!-- TIMER -->
+<div class="timer-bar">
+  <span class="timer-lbl">Workout</span>
+  <div class="timer-segs">
+    <span class="tseg">Warm-Up 2–3m</span>
+    <span class="tseg">Rotator 4–5m</span>
+    <span class="tseg">Scapular 3–4m</span>
+    <span class="tseg">Core 2m</span>
+    <span class="tseg">Cool-Down 2–3m</span>
+  </div>
+  <span class="total-t">≈ 13–17 min</span>
+</div>
+
+<!-- TAB GROUP: EXERCISES -->
+<div class="tab-group-label">— Exercises</div>
+<div class="tabs" id="tabs-exercise">
+  <button class="tab active-rehab" onclick="switchTab('warmup',this,'rehab')">Warm-Up <span style="opacity:.35;font-size:9px;margin-left:3px">2–3m</span></button>
+  <button class="tab" onclick="switchTab('rotator',this,'rehab')">Rotator Cuff <span style="opacity:.35;font-size:9px;margin-left:3px">4–5m</span></button>
+  <button class="tab" onclick="switchTab('scapular',this,'rehab')">Scapular <span style="opacity:.35;font-size:9px;margin-left:3px">3–4m</span></button>
+  <button class="tab" onclick="switchTab('core',this,'rehab')">Core <span style="opacity:.35;font-size:9px;margin-left:3px">2m</span></button>
+  <button class="tab" onclick="switchTab('cooldown',this,'rehab')">Cool-Down <span style="opacity:.35;font-size:9px;margin-left:3px">2–3m</span></button>
+</div>
+
+<!-- TAB GROUP: THERMAL -->
+<div class="tab-group-label">— Ice &amp; Heat Therapy</div>
+<div class="tabs" id="tabs-thermal">
+  <button class="tab" onclick="switchTab('ice',this,'ice')">🧊 Ice · Acute</button>
+  <button class="tab" onclick="switchTab('heat',this,'heat')">🔥 Heat · Chronic</button>
+  <button class="tab" onclick="switchTab('contrast',this,'contrast')">⟳ Contrast</button>
+  <button class="tab" onclick="switchTab('thermal-safety',this,'ice')">⚠ Safety</button>
+</div>
+
+<!-- TAB GROUP: REFERENCE -->
+<div class="tab-group-label">— Reference</div>
+<div class="tabs" id="tabs-ref">
+  <button class="tab" onclick="switchTab('avoid',this,'avoid')">Avoid</button>
+  <button class="tab" onclick="switchTab('phase',this,'rehab')">Left Phases</button>
+  <button class="tab" onclick="switchTab('flags',this,'avoid')">Red Flags</button>
+</div>
+
+<!-- CONTENT -->
+<div class="content" id="content"></div>
+
+<script>
+const TOTAL = 17;
+let completed = {};
+let activeTabId = 'warmup';
+
+/* ---- DATA ---- */
+const EXERCISES = {
+  warmup:[
+    {id:'w1',num:'01',name:'Pendulum Swings (Codman\'s)',applies:'bilateral',reps:'60–90 sec / arm',eq:'Table or wall for support',
+     how:'Lean forward at waist, support with uninvolved hand. Let affected arm hang freely. Use gentle body sway — not muscular effort — to create small circles (10 CW, 10 CCW), 10 forward-back, 10 side-to-side.',
+     why:'Pendulums are included in every published labrum protocol from day 1. They produce joint distraction and capsular mobilization with virtually zero muscular demand, promote synovial fluid circulation, and reduce stiffness without loading compromised structures.',
+     src:'MGH Sports Medicine; Wilk et al., N Am J Sports Phys Ther 2006',left:null},
+    {id:'w2',num:'02',name:'Scapular Squeezes (Retraction Holds)',applies:'bilateral',reps:'2 sets × 10 reps · 5-sec hold',eq:'None',
+     how:'Standing or seated. Squeeze shoulder blades together and slightly downward. Hold 5 seconds, release. Keep neck neutral.',
+     why:'Activates middle trapezius and rhomboids. Scapular retraction increases subacromial space width and enhances supraspinatus force production. Closed-chain isometric requiring no glenohumeral motion — safe in all phases.',
+     src:'Escamilla et al., Sports Med 2009',left:null},
+    {id:'w3',num:'03',name:'Light Band Pull-Aparts',applies:'right+leftmod',reps:'1 set × 15 reps',eq:'Light resistance band',
+     how:'Hold band at shoulder width, arms straight at chest height. Pull apart by squeezing shoulder blades. Keep movement in the horizontal plane — no overhead component.',
+     why:'Low-load horizontal abduction activates middle trapezius and posterior deltoid with accommodating resistance. Primes posterior shoulder musculature for the strengthening block.',
+     src:'Cools et al., Am J Sports Med 2007',
+     left:'LEFT (Acute): Perform only isometric scapular squeezes (Ex. 02) instead. Defer pull-aparts to week 3+.'},
+  ],
+  rotator:[
+    {id:'r1',num:'04',name:'Side-Lying External Rotation',applies:'right+leftmod',reps:'2 sets × 12–15 reps · 3-sec lower',eq:'Dumbbell 1–2.5 kg + towel roll',
+     how:'Lie on uninvolved side. Affected arm on top, elbow bent 90°, towel roll between arm and torso. Rotate forearm upward to ~45° ER. Do not force end-range. Lower slowly over 3 seconds.',
+     why:'Infraspinatus reaches 62% MVIC and teres minor 67% MVIC — highest combined activation of any tested exercise (Reinold 2004). Towel roll increases cuff EMG 20–25%. Side-lying keeps abduction at 0°, entirely avoiding anterior labral stress.',
+     src:'Reinold et al., JOSPT 2004',
+     left:'LEFT (Weeks 1–3): Isometrics only — press outward against doorframe at 0° abduction, 5-sec holds, 2×10 at 50% effort. Add isotonic at week 3+.'},
+    {id:'r2',num:'05',name:'Standing Band External Rotation at 0°',applies:'right+leftmod',reps:'2 sets × 12–15 reps · 3-sec return',eq:'Resistance band at door, elbow height + towel roll',
+     how:'Stand sideways to anchor. Elbow bent 90°, towel roll between arm and ribs. Rotate forearm away from body against band, controlling return over 3 seconds. Keep wrist neutral.',
+     why:'Strong infraspinatus and teres minor activation with minimal deltoid interference. Accommodating resistance provides increasing load through range — ideal for early-mid rehab.',
+     src:'Boettcher et al., Med Sci Sports Exerc 2009',
+     left:'LEFT (Weeks 1–3): Isometrics only. Week 3+: begin isotonic with lowest resistance band.'},
+    {id:'r3',num:'06',name:'Standing Band Internal Rotation at 0°',applies:'right+leftmod',reps:'2 sets × 12–15 reps · 3-sec return',eq:'Resistance band at door, elbow height',
+     how:'Stand sideways with working arm closest to door. Elbow bent 90°, pinned to side. Rotate forearm inward across body against resistance. Control return slowly.',
+     why:'Targets subscapularis, the largest rotator cuff muscle and critical anterior stabilizer. At 0° abduction, loads subscapularis without the combined abduction + ER position that stresses the anterior labrum.',
+     src:'AAOS Conditioning Protocol; Reinold et al., JOSPT 2009',
+     left:'LEFT (Weeks 1–3): Isometrics only — press palm against wall at 90° elbow bend, 5-sec holds.'},
+    {id:'r4',num:'07',name:'Belly Press (Subscapularis Isolation)',applies:'right+leftmod',reps:'8–10 reps × 5-sec hold',eq:'None (isometric)',
+     how:'Standing, palm flat on stomach at navel level, elbow bent 90°. Press hand into stomach using shoulder IR force — not by extending wrist or flexing elbow. Keep forearm parallel to floor.',
+     why:'Generates 78% upper subscapularis MVIC with only 18.5% pectoralis contribution — the purest subscapularis isolation available (Chao et al. 2008). No abduction, no ER — anterior labrum is completely unloaded.',
+     src:'Chao et al., Arthroscopy 2008',
+     left:'LEFT: Safe from week 1 at 50% effort. Progress to 80–100% by week 3+.'},
+    {id:'r5',num:'08',name:'Full Can Raises (Supraspinatus)',applies:'right+leftmod',reps:'2 sets × 12–15 reps · 60° max elevation',eq:'Light dumbbell 1–2 kg or band',
+     how:'Standing, arms at sides, thumbs pointing up. Raise arms in the scapular plane (~30–45° forward of coronal plane) to 60° max elevation. Lower over 3 seconds. Thumbs up throughout.',
+     why:'Full can produces 62–67% supraspinatus MVIC while generating less deltoid co-contraction (52% vs 77%) than empty can. Scapular plane keeps humeral head centered. Capping at 60° avoids impingement and stays below anterior labral danger zone.',
+     src:'Reinold et al., J Athl Train 2007; Escamilla et al., Sports Med 2009',
+     left:'LEFT: Defer to week 4–6+ once pain-free active ROM is restored. Begin bodyweight, then +0.5 kg increments.'},
+  ],
+  scapular:[
+    {id:'s1',num:'09',name:'Prone Y-Raise (Lower Trapezius)',applies:'right+leftmod',reps:'2 sets × 10–12 reps · 2-sec hold',eq:'Dumbbell 0.5–1.5 kg or bodyweight',
+     how:'Lie face-down on a bench or bed edge. Arms hanging straight down, thumbs pointing up. Raise arms into a Y-shape (~120° from body) to just above shoulder height. Squeeze lower traps at top for 2 seconds. Lower slowly.',
+     why:'Gold-standard lower trapezius exercise (Garcia et al. 2023). Produces a favorable low upper-trap/lower-trap ratio — critical for correcting the muscle imbalance common in shoulder dysfunction (Cools et al. 2007). A 6-week program improved pain and function while reducing upper trap dominance.',
+     src:'Cools et al., Am J Sports Med 2007; De Mey et al. 2012',
+     left:'LEFT: Bodyweight only, limit elevation to 60° initially. Progress range as pain decreases week by week.'},
+    {id:'s2',num:'10',name:'Prone T-Raise (Middle Trapezius)',applies:'right+leftmod',reps:'2 sets × 10–12 reps · 2-sec hold',eq:'Dumbbell 0.5–1.5 kg or bodyweight',
+     how:'Same prone position. Raise arms directly out to sides (90° abduction) with thumbs pointing up. Squeeze shoulder blades at top for 2 seconds. Lower slowly.',
+     why:'Targets middle trapezius and rhomboids with high EMG activation. Thumb-up position opens subacromial space preventing impingement. Identified by Moseley & Jobe as one of four essential scapular exercises.',
+     src:'Moseley et al., Am J Sports Med 1992',
+     left:'LEFT: Bodyweight only initially. Limit range if front-of-shoulder pain is provoked.'},
+    {id:'s3',num:'11',name:'Wall Slides (Serratus + Lower Trap)',applies:'bilateral',reps:'2 sets × 10–12 reps',eq:'Wall',
+     how:'Stand facing a wall, forearms flat against the surface, elbows at 90°. Slide forearms upward along wall maintaining contact throughout. Slide up to 120° of shoulder flexion (or pain-free limit). Return slowly.',
+     why:'Activates serratus anterior at and above 90° elevation — superior to push-up plus for SA activation during overhead motion (Hardwick et al. 2006). Wall provides proprioceptive reference and closed-chain axial loading, enhancing glenohumeral congruency.',
+     src:'Hardwick et al., JOSPT 2006; Kibler et al. 2001',left:null},
+    {id:'s4',num:'12',name:'Push-Up Plus (Serratus Anterior)',applies:'right+leftmod',reps:'2 sets × 10 reps',eq:'Floor',
+     how:'Start in plank or kneeling push-up position. Perform a push-up. At the top, push further by protracting shoulder blades (rounding upper back) for 2 seconds — this "plus" phase is key. Return to neutral.',
+     why:'Highest-activation closed-chain serratus anterior exercise in the literature (PMC 6863690). Serratus anterior is the primary scapular protractor and upward rotator — weakness causes scapular winging and altered scapulohumeral rhythm.',
+     src:'Moseley et al., Am J Sports Med 1992; PMC 6863690',
+     left:'LEFT (Weeks 1–3): From knees only if anterior pain is absent. Skip entirely if weight-bearing provokes anterior pain.'},
+  ],
+  core:[
+    {id:'c1',num:'13',name:'Dead Bugs (Anti-Extension Core)',applies:'bilateral',reps:'2 sets × 8–10 per side',eq:'Floor',
+     how:'Lie on back, arms at ceiling, knees bent 90°. Slowly extend one leg while lowering opposite arm overhead (don\'t force overhead reach with left arm if painful). Keep lower back pressed to floor. Return and alternate.',
+     why:'Trains anti-extension core control with reciprocal upper-lower coordination. Supine position eliminates compressive shoulder loading while training transversus abdominis and internal obliques that enable proximal stability for distal shoulder function.',
+     src:'Brumitt & Dale, N Am J Sports Phys Ther 2009',
+     left:'LEFT: Safe from day 1. Limit arm overhead extension on left side based on pain tolerance.'},
+    {id:'c2',num:'14',name:'Pallof Press (Anti-Rotation Core)',applies:'bilateral',reps:'2 sets × 8–10 per side · 3-sec hold',eq:'Resistance band at door, chest height',
+     how:'Stand perpendicular to anchor, band at chest with both hands. Press band straight forward from chest, hold 3 seconds, return. The band tries to rotate your torso — resist with your core. Switch sides.',
+     why:'Trains resistance to rotational forces — the exact demand of a golf swing. 50% of swinging energy originates from the core; weak core forces compensatory shoulder loading. Pre-trains neuromuscular pattern for safe return to golf.',
+     src:'Brumitt & Dale 2009; Kibler et al. 2008',left:null},
+  ],
+  cooldown:[
+    {id:'cd1',num:'15',name:'Modified Cross-Body Stretch',applies:'bilateral',reps:'3 × 30-sec hold per shoulder',eq:'Wall for scapular stabilization',
+     how:'Press involved shoulder\'s scapula flat against a wall. Use opposite hand to pull arm across body at chest height, grasping at elbow. Feel stretch in the BACK of shoulder — not the front. Stop if any anterior pain.',
+     why:'Preferred posterior capsule stretch for anterior labral pathology. Improves IR ROM without anterior translation risk. Wall-based scapular stabilization optimizes targeting of posterior glenohumeral structures (Wilk et al. 2013).',
+     src:'Wilk et al., JOSPT 2013; ScienceDirect 2025 RCT',
+     left:'LEFT: Only if completely pain-free. Any anterior shoulder provocation = stop immediately.'},
+    {id:'cd2',num:'16',name:'Modified Sleeper Stretch (Right Only)',applies:'right',reps:'3–5 × 15–30-sec hold',eq:'Floor or bed',
+     how:'Lie on right side with trunk rolled 20–30° posteriorly. Right shoulder at 90° flexion, elbow at 90°. Use left hand to gently push right forearm toward floor creating IR. Stop at comfortable stretch.',
+     why:'Positions humerus in scapular plane by rolling trunk posteriorly, increasing strain specifically on posterior capsule (Wilk 2013). Minimizes subacromial impingement risk of traditional sleeper stretch.',
+     src:'Wilk et al., JOSPT 2013; Reinold, mikereinold.com',
+     left:'LEFT: Defer to week 3–4 minimum. Compressive side-lying forces can provoke inflamed anterior left shoulder. Use cross-body stretch instead.'},
+    {id:'cd3',num:'17',name:'Doorway Pectoral Stretch',applies:'right+leftmod',reps:'2–3 × 20–30-sec hold per side',eq:'Doorway',
+     how:'Stand in doorway with forearm on doorframe at ELBOW HEIGHT (not shoulder height). Step forward gently until stretch is felt across chest and front of shoulder. Do not push into anterior shoulder pain.',
+     why:'Tight pectoralis minor pulls scapula into anterior tilt, reducing subacromial space. Low arm position achieves pectoral lengthening while keeping arm below 90° abduction threshold, staying out of the apprehension zone.',
+     src:'AAOS OrthoInfo; Kibler et al., IJSPT',
+     left:'LEFT: Completely pain-free only. Keep arm at elbow height. Reduce range if any anterior pain occurs.'},
+  ],
+};
+
+const AVOID_ITEMS=[
+  {icon:'⛔',t:'Behind-the-neck press / lat pulldowns',d:'Forces simultaneous abduction, external rotation, and horizontal abduction under load — worst combination for anterior labral integrity (MGH Protocol).'},
+  {icon:'⛔',t:'Dips below 90° elbow flexion',d:'Extreme shoulder extension drives the humeral head anteriorly against the compromised labral rim.'},
+  {icon:'⛔',t:'Wide-grip bench press & chest flies (hands below chest)',d:'Excessive horizontal abduction stretches the anterior capsule directly over the tear.'},
+  {icon:'⛔',t:'Upright rows & empty-can raises',d:'Internal rotation under abduction creates subacromial impingement, compounding labral stress with cuff irritation (Escamilla et al. 2009).'},
+  {icon:'⛔',t:'Training to muscular failure',d:'Fatigue-induced loss of neuromuscular control increases glenohumeral instability risk (Ma et al. 2017).'},
+  {icon:'⚠️',t:'Full overhead pressing — Left shoulder, weeks 1–3',d:'Defer any overhead press movement until pain-free ROM is fully restored on the left side.'},
+];
+
+const PHASES=[
+  {badge:'NOW',title:'Weeks 1–2 (Current)',active:true,items:['Pendulum swings 3–5× daily, 2 minutes','Isometric IR & ER at 0° abduction — 50% effort, 5-sec holds, 2×10','Scapular squeezes — bilateral','Ice 15–20 min after activity (see Ice tab)','No resistance bands/dumbbells for LEFT shoulder','Cross-body stretch only if completely pain-free','Dead bugs and Pallof presses — fully safe now']},
+  {badge:'SOON',title:'Weeks 3–4',active:false,items:['Add light band ER/IR at 0° for left shoulder','Begin wall slides to pain-free range','Bodyweight-only prone Y and T raises','Modified cross-body stretch with wall stabilization','Transition to contrast therapy after exercise (see Contrast tab)']},
+  {badge:'LATER',title:'Weeks 5–6',active:false,items:['Progress left shoulder to match right protocol at lighter loads','Add full can raises at 60°','Push-up plus from knees','Begin modified sleeper stretch if tolerated','Increase band resistance by one level','Switch to pre-exercise heat for left shoulder (see Heat tab)']},
+  {badge:'GOAL',title:'Week 7+',active:false,items:['Full bilateral protocol at matched intensity','Progress loads per right shoulder program','Evaluate readiness for return to golf swing','Full heat pre-exercise, contrast post-exercise as standard']},
+];
+
+const RED_IMMEDIATE=['Visible deformity (flattened deltoid, prominent acromion) — possible dislocation','Complete inability to raise arm — possible full-thickness cuff tear or dislocation','Numbness, tingling, or weakness radiating into arm or hand — axillary nerve or brachial plexus injury','A distinct "pop" or tearing sensation followed by immediate significant weakness','Shoulder "slips" or feels "loose" during movement — subluxation or frank instability','Pale, cool, or discolored hand or forearm — possible vascular compromise'];
+const RED_SOON=['Pain does not progressively improve with conservative care over 7–10 days','Unable to achieve 90° of forward flexion actively','Pain remains above 4/10 at rest after 5+ days','Night pain that regularly wakes you from sleep'];
+
+const SOURCES_REHAB=[
+  {n:'01',t:'Steinmetz et al. (2022) — Return-to-play after nonsurgical SLAP management.',url:'https://pubmed.ncbi.nlm.nih.gov/35063641/'},
+  {n:'02',t:'ASSET Consensus Guideline — JOSPT 2010. Anterior Capsulolabral Rehab.',url:'https://www.jospt.org/doi/10.2519/jospt.2010.3186'},
+  {n:'03',t:'MGH Sports Medicine Protocol — Arthroscopic Labrum Repair (Combined).',url:'https://www.massgeneral.org/assets/MGH/pdf/orthopaedics/sports-medicine/physical-therapy/rehabilitation-protocol-for-combined-labrum-repair.pdf'},
+  {n:'04',t:'Reinold et al. (2004) — EMG of shoulder rehab exercises. JOSPT.',url:'https://pubmed.ncbi.nlm.nih.gov/19769415/'},
+  {n:'05',t:'Escamilla et al. (2009) — Shoulder muscle activity in rehab. Sports Med.',url:'https://pubmed.ncbi.nlm.nih.gov/19769415/'},
+  {n:'06',t:'Cools et al. (2007) — Trapezius exercises & scapular dyskinesis. Am J Sports Med.',url:'https://ijspt.scholasticahq.com/article/31727'},
+  {n:'07',t:'Wilk et al. (2013) — Sleeper vs. cross-body stretch. JOSPT.',url:'https://www.sciencedirect.com/science/article/abs/pii/S0021929025004348'},
+  {n:'08',t:'Moseley et al. (1992) — EMG analysis of scapular muscles. Am J Sports Med.',url:'https://pubmed.ncbi.nlm.nih.gov/1558238/'},
+  {n:'09',t:'HSS — Shoulder Labrum Tear Overview.',url:'https://www.hss.edu/health-library/conditions-and-treatments/shoulder-labrum-tear'},
+  {n:'10',t:'AAOS OrthoInfo — Rotator Cuff and Shoulder Conditioning Program.',url:'https://orthoinfo.aaos.org/en/recovery/rotator-cuff-and-shoulder-conditioning-program/'},
+];
+
+const SOURCES_THERMAL=[
+  {n:'T1',t:'Dubois & Esculier (2019) — Soft-tissue injuries: PEACE & LOVE. Br J Sports Med.',url:'https://www.semanticscholar.org/paper/Soft-tissue-injuries-simply-need-PEACE-and-LOVE-Dubois-Esculier/58d05cc6bfc47b3c495f1aa481fefc9dcd602492'},
+  {n:'T2',t:'Bleakley et al. (2006) — Cryotherapy for acute ankle sprains, 10-10-10 protocol. PubMed 16611722.',url:'https://pubmed.ncbi.nlm.nih.gov/16611722/'},
+  {n:'T3',t:'Peake et al. (2017) — Post-exercise cryotherapy blunts muscle gains. J Physiol.',url:'https://pmc.ncbi.nlm.nih.gov/articles/PMC5605158/'},
+  {n:'T4',t:'Leonardi et al. (2025) — Contrast therapy for musculoskeletal pain. MDPI J Clin Med.',url:'https://www.mdpi.com/2077-0383/14/5/1441'},
+  {n:'T5',t:'HSS — Ice or Heat: What\'s Best for Your Pain?',url:'https://www.hss.edu/health-library/move-better/ice-or-heat'},
+  {n:'T6',t:'Cleveland Clinic — Ice vs. Heat: What Is Best for Your Pain?',url:'https://health.clevelandclinic.org/should-you-use-ice-or-heat-for-pain-infographic'},
+  {n:'T7',t:'PMC Contrast Baths, Intramuscular Hemodynamics, and Oxygenation (near-infrared spectroscopy).',url:'https://pmc.ncbi.nlm.nih.gov/articles/PMC6188085/'},
+  {n:'T8',t:'Physiopedia — Cryotherapy Guidelines.',url:'https://www.physio-pedia.com/Cryotherapy_Guidelines'},
+  {n:'T9',t:'Cardinal Health — Local application of therapeutic heat and cold.',url:'https://www.cardinalhealth.com/en/product-solutions/medical/patient-care/thermal-products/resources-for-localized-temperature-therapy/local-application-of-therapeutic-heat-and-cold.html'},
+  {n:'T10',t:'PMC — Review of PEACE & LOVE: new era of RICE? Narrative review 2025.',url:'https://pmc.ncbi.nlm.nih.gov/articles/PMC12489226/'},
+];
+
+/* ---- HELPERS ---- */
+function badgeHtml(a){
+  if(a==='bilateral') return '<span class="badge bb">BILATERAL</span>';
+  if(a==='right') return '<span class="badge br">RIGHT ONLY</span>';
+  if(a==='right+leftmod') return '<span class="badge br">RIGHT</span><span class="badge blm">LEFT MOD</span>';
+  return `<span class="badge bb">${a.toUpperCase()}</span>`;
+}
+
+function exCardHtml(ex){
+  const done=!!completed[ex.id];
+  return `<div class="ex-card${done?' done':''}" id="card-${ex.id}">
+    <div class="card-hd" onclick="toggleCard('${ex.id}')">
+      <div class="ex-num">${ex.num}</div>
+      <div class="card-tg">
+        <div class="card-t">${ex.name}</div>
+        <div class="card-meta">${badgeHtml(ex.applies)}<span class="reps-b">${ex.reps}</span></div>
+      </div>
+      <div class="card-right">
+        <button class="chk${done?' checked':''}" onclick="toggleDone(event,'${ex.id}')">${done?'✓':''}</button>
+        <span class="exp-ico" id="ico-${ex.id}">⌄</span>
+      </div>
+    </div>
+    <div class="card-bd hidden" id="bd-${ex.id}">
+      ${ex.eq?`<div class="info-block"><div class="ib-lbl">Equipment</div><div class="ib-txt">${ex.eq}</div></div>`:''}
+      <div class="info-block"><div class="ib-lbl">How To</div><div class="ib-txt">${ex.how}</div></div>
+      <div class="info-block"><div class="ib-lbl">Clinical Rationale</div><div class="ib-txt">${ex.why}<br/><span class="src-lbl">⬡ ${ex.src}</span></div></div>
+      ${ex.left?`<div class="lmod-block"><span style="font-size:16px;flex-shrink:0">🩺</span><div class="lmod-txt"><strong>Left Shoulder Modification:</strong> ${ex.left}</div></div>`:''}
+    </div>
+  </div>`;
+}
+
+function thermalCardHtml(id,icon,titleClass,title,subtitle,color,bodyHtml){
+  return `<div class="thermal-card ${color}-card">
+    <div class="thermal-hd" onclick="toggleThermal('${id}')">
+      <span class="thermal-icon">${icon}</span>
+      <div>
+        <div class="thermal-title ${titleClass}">${title}</div>
+        <div class="thermal-subtitle">${subtitle}</div>
+      </div>
+      <span class="thermal-exp" id="texp-${id}">⌄</span>
+    </div>
+    <div class="thermal-body" id="tb-${id}">${bodyHtml}</div>
+  </div>`;
+}
+
+function sourcesHtml(arr,n){
+  return `<div class="sources-block"><div class="src-hd">Sources</div>${arr.slice(0,n||arr.length).map(s=>`<div class="src-row"><span class="src-num">[${s.n}]</span><span class="src-txt">${s.t} — <a href="${s.url}" target="_blank">↗ View</a></span></div>`).join('')}</div>`;
+}
+
+/* ---- SECTION RENDERERS ---- */
+function renderSection(id){
+  const exSections={
+    warmup:{tag:'tag-green',label:'Warm-Up · 2–3 min',title:'Prime the joints before loading',desc:'Increases tissue temperature, promotes synovial fluid distribution, and activates scapular stabilizers. Safe for both shoulders from day 1.',data:EXERCISES.warmup},
+    rotator:{tag:'tag-green',label:'Rotator Cuff · 4–5 min',title:'Strengthen all four cuff muscles safely',desc:'All exercises stay at or below 45° abduction — eliminating the apprehension zone. Towel roll between arm and torso is non-negotiable for exercises 04 and 05.',data:EXERCISES.rotator},
+    scapular:{tag:'tag-green',label:'Scapular Stabilization · 3–4 min',title:'Build the foundation of shoulder health',desc:'Scapular dyskinesis is present in the vast majority of shoulder pathology. Lower trap, middle trap, and serratus anterior must be trained to maintain favorable upward rotation ratios (Kibler et al. 2013).',data:EXERCISES.scapular},
+    core:{tag:'tag-green',label:'Core · 2 min',title:'Proximal stability for distal function',desc:'Core muscles activate before shoulder movement as an anticipatory postural mechanism. 50% of golf swing energy originates from the trunk — weak core forces compensatory shoulder overload.',data:EXERCISES.core},
+    cooldown:{tag:'tag-green',label:'Cool-Down · 2–3 min',title:'Restore posterior capsule length',desc:'Posterior capsule tightness shifts the humeral head anteriorly, increasing anterior labral stress. Always perform after strengthening when tissue temperature is elevated.',data:EXERCISES.cooldown},
+  };
+
+  if(exSections[id]){
+    const s=exSections[id];
+    return `<div class="section-header"><div class="section-tag ${s.tag}">${s.label}</div><h2 class="section-title">${s.title}</h2><p class="section-desc">${s.desc}</p></div>
+    <button class="reset-btn" onclick="resetAll()">↺ Reset session</button>
+    ${s.data.map(exCardHtml).join('')}${sourcesHtml(SOURCES_REHAB,5)}`;
+  }
+
+  if(id==='ice') return `
+    <div class="section-header"><div class="section-tag tag-blue">Cryotherapy · Acute Phase</div><h2 class="section-title">Ice protocols for the left shoulder</h2><p class="section-desc">For acute injuries, ice serves primarily as an analgesic and secondarily to limit hemorrhage and edema. The PEACE & LOVE framework questions ice's role in healing, but clinical consensus maintains it for significant injuries with swelling.</p></div>
+    <div class="callout blue">🧊 <strong>Right shoulder (chronic):</strong> Do NOT ice routinely after workouts — post-exercise cryotherapy blunts the muscle strengthening adaptations your non-surgical rehab depends on (Peake et al. 2017). Reserve ice only for acute flare-ups above 4/10 pain.</div>
+    ${thermalCardHtml('ice-72h','🕐','ice-title','Hours 0–72: Most Aggressive Phase','Apply every 2–3 hours · 15–20 min sessions','ice',`
+      <div class="proto-grid">
+        <div class="proto-step"><div class="step-num blue">1</div><div class="step-content"><div class="step-title">Intermittent 10-10-10 Protocol (Best Evidence)</div><div class="step-desc">10 minutes on → 10 minutes off → 10 minutes on. Bleakley et al. (BJSM 2006) demonstrated superior pain reduction vs. continuous 20-min application while reducing ice burn risk. Repeat every 2–3 hours during waking hours.</div></div></div>
+        <div class="proto-step"><div class="step-num blue">2</div><div class="step-content"><div class="step-title">Barrier: Single-Layer Damp Cloth</div><div class="step-desc">Crushed ice in a plastic bag covered with one damp thin towel. The damp barrier improves cold transfer efficiency while preventing frostbite. Gel packs from freezer reach −15 to −20°C — they require a thicker barrier.</div></div></div>
+        <div class="proto-step"><div class="step-num blue">3</div><div class="step-content"><div class="step-title">Best Application: Crushed Wet Ice</div><div class="step-desc">Crushed ice mixed with a small amount of water in a plastic bag produces the greatest intramuscular temperature reduction and maintains lower tissue temperatures during rewarming compared to gel packs or frozen vegetables.</div></div></div>
+        <div class="proto-step"><div class="step-num blue">4</div><div class="step-content"><div class="step-title">After Icing: Wait 10–15 Minutes Before Moving</div><div class="step-desc">Cryotherapy impairs shoulder proprioception and muscle strength for approximately 10 minutes after removal. Do not perform exercises, complex movements, or activities requiring shoulder coordination immediately after icing.</div></div></div>
+      </div>
+    `)}
+    ${thermalCardHtml('ice-37','📅','ice-title','Days 3–7: Transition Phase','Reduce to 3–4 applications per day','ice',`
+      <div class="proto-grid">
+        <div class="proto-step"><div class="step-num blue">→</div><div class="step-content"><div class="step-title">Frequency Reduction</div><div class="step-desc">The inflammatory cascade is beginning to resolve and the proliferative healing phase is initiating. Reduce ice to 3–4 applications per day, primarily after activities that aggravate symptoms.</div></div></div>
+        <div class="proto-step"><div class="step-num blue">→</div><div class="step-content"><div class="step-title">Begin Gentle Movement</div><div class="step-desc">Start pain-free pendulum exercises and active-assisted ROM within tolerated limits. Some clinicians introduce contrast therapy by day 5 if visible swelling has resolved. Ice continues after any session that provokes flare-up.</div></div></div>
+      </div>
+    `)}
+    ${thermalCardHtml('ice-w3','🗓','ice-title','Weeks 1–3: Tapering Phase','Ice only as needed — after PT or activity flare-ups','ice',`
+      <div class="proto-grid">
+        <div class="proto-step"><div class="step-num blue">→</div><div class="step-content"><div class="step-title">Shift Away from Routine Ice</div><div class="step-desc">By this point, fibroblasts are actively depositing type III collagen. Excessive cryotherapy may impede the healing and remodeling process. Use ice only after specific sessions that produce above-normal pain (>4/10) or visible swelling.</div></div></div>
+        <div class="proto-step"><div class="step-num blue">→</div><div class="step-content"><div class="step-title">Transition to Contrast or Heat</div><div class="step-desc">Begin contrast therapy (heat + ice alternating) when swelling has fully resolved. See the Contrast tab for the full protocol. This promotes blood flow to healing tissues while still managing soreness.</div></div></div>
+      </div>
+    `)}
+    <div class="divider"></div>
+    <div class="section-tag tag-blue" style="margin-bottom:10px">How Ice Works Biologically</div>
+    <div class="mech-grid">
+      <div class="mech-item"><div class="mech-label blue">Vasoconstriction</div><div class="mech-val">Reduces local blood flow 30–50% via α2-adrenoreceptor activation, limiting hemorrhage and edema formation.</div></div>
+      <div class="mech-item"><div class="mech-label blue">Nerve Conduction</div><div class="mech-val">Slows nerve conduction velocity → local anesthetic progression: cold → burning → aching → numbness in 15–20 min.</div></div>
+      <div class="mech-item"><div class="mech-label blue">Cellular Metabolism</div><div class="mech-val">Reduces cellular metabolic rate, limiting secondary hypoxic cell death in surrounding viable tissue after the primary injury.</div></div>
+      <div class="mech-item"><div class="mech-label blue">Key Caveat</div><div class="mech-val">Ice may slow macrophage infiltration and satellite cell proliferation. Use it as a painkiller — not as a tissue healer.</div></div>
+    </div>
+    ${sourcesHtml(SOURCES_THERMAL,5)}`;
+
+  if(id==='heat') return `
+    <div class="section-header"><div class="section-tag tag-orange">Thermotherapy · Chronic Phase</div><h2 class="section-title">Heat protocols for the right shoulder</h2><p class="section-desc">For a chronic partial labral tear with mild baseline pain (1–3/10), the inflammatory phase resolved months ago. Enhanced circulation, tissue extensibility, and muscle relaxation are the therapeutic priorities — all of which moist heat directly provides.</p></div>
+    <div class="callout orange">🔥 <strong>Best single move:</strong> Apply moist heat for 15–20 minutes immediately BEFORE exercise or stretching. Heat increases collagen extensibility and creates the optimal window for posterior capsule stretches. Moist heat raises muscle temp 3.1°C vs 2.2°C for dry heat (Petrofsky et al.).</div>
+    ${thermalCardHtml('heat-std','🌡','heat-title','Standard Daily Protocol','15–20 minutes · 2–3× daily · 40–45°C','heat',`
+      <div class="proto-grid">
+        <div class="proto-step"><div class="step-num orange">1</div><div class="step-content"><div class="step-title">Best Method: Microwavable Moist Gel Pack</div><div class="step-desc">Conforms to rounded shoulder anatomy, delivers moist heat for deeper penetration (moist heat raises muscle temp 3.1°C vs 2.2°C dry heat), and easily self-applied. Heat to warm — not hot — to the inside of your wrist before applying.</div></div></div>
+        <div class="proto-step"><div class="step-num orange">2</div><div class="step-content"><div class="step-title">Temperature Target: 40–45°C (104–113°F)</div><div class="step-desc">Therapeutic window. Skin temperature must NEVER exceed 43–44°C (109–111°F) sustained — irreversible tissue damage begins at 45°C. Use a barrier cloth between pack and skin. Check skin every 5 minutes during first use.</div></div></div>
+        <div class="proto-step"><div class="step-num orange">3</div><div class="step-content"><div class="step-title">Alternative: Warm Shower 10–15 min</div><div class="step-desc">Equally effective as pre-exercise preparation (Harvard Health recommendation for shoulder conditions). Set water to comfortably warm — not scalding. Direct water stream to posterior and lateral shoulder.</div></div></div>
+        <div class="proto-step"><div class="step-num orange">4</div><div class="step-content"><div class="step-title">Critical: Never Heat an Inflamed Shoulder</div><div class="step-desc">If the shoulder looks or feels hot, red, or swollen — a sign of active inflammation (flare-up) — do NOT apply heat. Use ice instead. Return to heat once the flare resolves (24–72 hours).</div></div></div>
+      </div>
+    `)}
+    ${thermalCardHtml('heat-preex','🏋','heat-title','Pre-Exercise Protocol','Apply 15 min before daily rehab routine','heat',`
+      <div class="callout orange" style="margin-bottom:14px">Most valuable application of heat is immediately before exercise or stretching — not after. Heat creates the exact tissue environment rehab exercises require.</div>
+      <div class="proto-grid">
+        <div class="proto-step"><div class="step-num orange">→</div><div class="step-content"><div class="step-title">Right Shoulder: Standard Pre-Exercise Heat</div><div class="step-desc">Apply moist heat pack 15 minutes before every daily rehab session. This is your default protocol for the chronic right shoulder. Follow immediately with warm-up exercises while tissue is still warm.</div></div></div>
+        <div class="proto-step"><div class="step-num orange">→</div><div class="step-content"><div class="step-title">Left Shoulder: Begin Pre-Exercise Heat at Week 5–6</div><div class="step-desc">Once acute inflammation has fully resolved and you are in the progressive loading phase, begin using pre-exercise heat for the left shoulder before stretching sessions. Do not use heat on the acute left shoulder during weeks 1–3.</div></div></div>
+        <div class="proto-step"><div class="step-num orange">→</div><div class="step-content"><div class="step-title">Post-Exercise: Do NOT Routinely Ice After Workouts</div><div class="step-desc">For the chronic right shoulder, post-exercise cryotherapy blunts p70S6 kinase activation (mTOR signaling essential for muscle protein synthesis) and reduces satellite cell proliferation — directly counteracting the strengthening adaptations you are training for (Peake et al. 2017).</div></div></div>
+      </div>
+    `)}
+    <div class="divider"></div>
+    <div class="section-tag tag-orange" style="margin-bottom:10px">How Heat Works Biologically</div>
+    <div class="mech-grid">
+      <div class="mech-item"><div class="mech-label orange">Vasodilation</div><div class="mech-val">Activates thermoreceptors → bradykinin release → smooth muscle relaxation. Every 1°C tissue temp increase = 10–15% increase in local metabolism.</div></div>
+      <div class="mech-item"><div class="mech-label orange">Collagen Extensibility</div><div class="mech-val">Heated collagen in the posterior capsule and labral tissue becomes more viscoelastic — directly enabling more effective cross-body and sleeper stretches.</div></div>
+      <div class="mech-item"><div class="mech-label orange">Muscle Relaxation</div><div class="mech-val">Reduces gamma efferent firing rate and lowers muscle spindle excitability — relieving protective guarding that restricts shoulder ROM.</div></div>
+      <div class="mech-item"><div class="mech-label orange">Pain Relief</div><div class="mech-val">Thermoreceptors compete with pain signals at the spinal cord level (gate control theory) and promote endorphin secretion.</div></div>
+    </div>
+    ${sourcesHtml(SOURCES_THERMAL,5)}`;
+
+  if(id==='contrast') return `
+    <div class="section-header"><div class="section-tag tag-purple">Contrast Therapy</div><h2 class="section-title">Alternating ice and heat</h2><p class="section-desc">Contrast therapy becomes appropriate from day 3–5 post-injury once visible swelling, redness, and warmth to touch have resolved. It is contraindicated during acute inflammation (first 48–72 hours). Best used for the sub-acute and chronic shoulder — managing post-exercise stiffness and soreness.</p></div>
+    <div class="callout" style="background:rgba(167,139,250,.06);border-color:rgba(167,139,250,.15);color:#c4b5fd">⟳ <strong>Right shoulder:</strong> Use contrast therapy as your standard post-exercise recovery once you progress past active rehab sessions. <strong>Left shoulder:</strong> Begin at weeks 3–4, once visible swelling has resolved.</div>
+    <div class="section-tag tag-purple" style="margin-bottom:10px;margin-top:20px">Cycle Protocol</div>
+    <div class="cycle-row">
+      <div class="cycle-block cycle-heat">Heat<br/><span style="font-size:9px;opacity:.7">3–4 min</span></div>
+      <span class="cycle-arrow">→</span>
+      <div class="cycle-block cycle-cold">Cold<br/><span style="font-size:9px;opacity:.7">1 min</span></div>
+      <span class="cycle-arrow">→</span>
+      <div class="cycle-block cycle-heat">Heat<br/><span style="font-size:9px;opacity:.7">3–4 min</span></div>
+      <span class="cycle-arrow">→</span>
+      <div class="cycle-block cycle-cold">Cold<br/><span style="font-size:9px;opacity:.7">1 min</span></div>
+      <span class="cycle-arrow">→</span>
+      <span style="color:#5a6a7a;font-size:12px;font-family:'DM Mono',monospace">× 5–7 cycles</span>
+      <span class="cycle-arrow">→</span>
+      <div class="cycle-block cycle-end">End Cold<br/><span style="font-size:9px;opacity:.7">ALWAYS</span></div>
+    </div>
+    <div style="font-size:11px;color:#5a6a7a;margin-bottom:18px;font-family:'DM Mono',monospace;line-height:1.7">Total session: 20–30 minutes · Frequency: 1–2× daily or after exercise that produces soreness<br/>Heat target: 40–43°C · Cold: Ice pack in damp towel · End on COLD to limit swelling</div>
+    ${thermalCardHtml('con-why','🔬','contrast-title','The Science: Vascular Pumping','Near-infrared spectroscopy confirms hemodynamic effects','contrast',`
+      <div class="proto-grid">
+        <div class="proto-step"><div class="step-num purple">→</div><div class="step-content"><div class="step-title">What the Research Shows</div><div class="step-desc">One study using near-infrared spectroscopy demonstrated significant increases in tissue oxygenated hemoglobin (+7.4 μM) and tissue saturation index (+3.1%) during contrast therapy. The alternating vasoconstriction and vasodilation creates a "circulatory pump" effect promoting metabolic waste removal.</div></div></div>
+        <div class="proto-step"><div class="step-num purple">→</div><div class="step-content"><div class="step-title">Important Limitation</div><div class="step-desc">Myrer et al. found that temperatures 4 cm deep in muscle barely changed during contrast protocols — the effect is primarily superficial. Leonardi et al. (2025 scoping review) found contrast therapy improves pain and ROM but noted "the heterogeneity of studies makes results imprecise" — low to moderate evidence quality.</div></div></div>
+        <div class="proto-step"><div class="step-num purple">→</div><div class="step-content"><div class="step-title">Practical Value</div><div class="step-desc">Bieuzen et al.'s meta-analysis (18 trials) confirmed contrast therapy is superior to passive rest for muscle soreness reduction. Even if the deep mechanism is debated, the superficial tissue benefit and symptom relief make it a sensible bridge between acute ice and chronic heat.</div></div></div>
+      </div>
+    `)}
+    ${thermalCardHtml('con-when','📋','contrast-title','When to Use Each Modality','Quick decision guide by phase and shoulder','contrast',`
+      <table class="compare-table">
+        <thead><tr><th>Situation</th><th class="cell-ice">Ice</th><th class="cell-heat">Heat</th><th style="color:#c4b5fd">Contrast</th></tr></thead>
+        <tbody>
+          <tr><td>Left shoulder, days 0–3</td><td class="cell-ice">✓ Primary</td><td>✗</td><td>✗</td></tr>
+          <tr><td>Left shoulder, days 3–14</td><td class="cell-ice">After flare-ups</td><td>✗</td><td style="color:#c4b5fd">Day 5+ if swelling gone</td></tr>
+          <tr><td>Left shoulder, weeks 3–6</td><td class="cell-ice">Flare-ups only</td><td class="cell-heat">Pre-stretch week 5+</td><td style="color:#c4b5fd">Post-exercise</td></tr>
+          <tr><td>Right shoulder, daily routine</td><td>✗ routine</td><td class="cell-heat">✓ Pre-exercise</td><td style="color:#c4b5fd">Post-exercise option</td></tr>
+          <tr><td>Right shoulder, flare-up</td><td class="cell-ice">✓ 24–72 hrs</td><td>✗</td><td>✗</td></tr>
+          <tr><td>After any workout (chronic)</td><td>✗ Do NOT</td><td>✗</td><td style="color:#c4b5fd">Optional</td></tr>
+        </tbody>
+      </table>
+    `)}
+    ${sourcesHtml(SOURCES_THERMAL,5)}`;
+
+  if(id==='thermal-safety') return `
+    <div class="section-header"><div class="section-tag tag-red">Safety Warnings</div><h2 class="section-title">Thermal therapy precautions</h2><p class="section-desc">The shoulder presents specific nerve risks. The axillary nerve runs superficially around the surgical neck of the humerus, and the suprascapular nerve passes near the posterior shoulder — both are vulnerable to cold-induced conduction impairment with prolonged exposure.</p></div>
+    <div class="rf-card">
+      <div class="rf-hd"><span style="font-size:20px">🧊</span><span class="rf-title">Ice Safety Rules</span></div>
+      <ul class="rf-list">
+        <li>NEVER apply ice, frozen gel packs, or cold packs directly to bare skin. Gel packs from freezer reach −15 to −20°C — cause frostbite within minutes without a barrier.</li>
+        <li>Always use a single-layer damp cloth barrier — improves cold transfer efficiency AND prevents frostbite.</li>
+        <li>Maximum 20 minutes per session. Allow 45–60 minutes between applications for skin to normalize.</li>
+        <li>Check skin every 5 minutes: STOP if you see white, bright red, blue-purple discoloration, skin hardening, blistering, or numbness occurs before 15 minutes.</li>
+        <li>Wait 10–15 minutes after icing before performing exercises — shoulder proprioception and strength are impaired immediately post-cryotherapy.</li>
+        <li>Skin over acromion and clavicle is thin with minimal subcutaneous fat — increased ice burn risk over bony prominences.</li>
+      </ul>
+    </div>
+    <div class="rf-card warn">
+      <div class="rf-hd"><span style="font-size:20px">🔥</span><span class="rf-title warn">Heat Safety Rules</span></div>
+      <ul class="rf-list warn">
+        <li>NEVER apply heat directly to skin — always use a barrier cloth.</li>
+        <li>Skin temperature must NEVER exceed 43–44°C (109–111°F). Irreversible tissue damage begins at 45°C.</li>
+        <li>Never exceed 30 minutes with electric heating pads. NEVER fall asleep with a heating pad on — burn risk (HSS warning).</li>
+        <li>Test microwave-heated packs on inside of your wrist before applying to shoulder.</li>
+        <li>If area looks or feels hot, red, or swollen (active inflammation) — do NOT apply heat. Use ice instead.</li>
+        <li>Moist heat is superior to dry heat — better tissue penetration with lower burn risk.</li>
+      </ul>
+    </div>
+    <div class="rf-card">
+      <div class="rf-hd"><span style="font-size:20px">🚫</span><span class="rf-title">Absolute Contraindications for Both</span></div>
+      <ul class="rf-list">
+        <li><strong>Raynaud's disease or cold urticaria</strong> — absolute contraindication for ice; use only mild warmth.</li>
+        <li><strong>Peripheral neuropathy or impaired sensation</strong> — cannot sense dangerous temperatures; use extra insulation, shorter durations, frequent skin checks.</li>
+        <li><strong>Peripheral vascular disease</strong> — impaired circulation prevents appropriate temperature regulation; consult a physician before using either modality.</li>
+        <li><strong>Open wounds or active infection</strong> in the treatment area — avoid both ice and heat.</li>
+        <li><strong>Deep vein thrombosis</strong> — heat can dislodge clots; avoid heat therapy entirely in affected regions.</li>
+        <li>Remove metal jewelry from shoulder area before applying either modality — metal conducts temperature extremes rapidly.</li>
+      </ul>
+    </div>
+    ${sourcesHtml(SOURCES_THERMAL)}`;
+
+  if(id==='avoid') return `
+    <div class="section-header"><div class="section-tag tag-red">Movement Restrictions</div><h2 class="section-title">What to avoid — and why</h2><p class="section-desc">The anterior labrum is the glenohumeral joint's primary restraint against forward translation. Combined abduction + external rotation places maximum tensile load on the anterior labrum. Every item below directly targets this mechanism.</p></div>
+    ${AVOID_ITEMS.map(a=>`<div class="avoid-item"><span style="font-size:18px;flex-shrink:0">${a.icon}</span><div><div class="avoid-t">${a.t}</div><div class="avoid-d">${a.d}</div></div></div>`).join('')}
+    ${sourcesHtml(SOURCES_REHAB,5)}`;
+
+  if(id==='phase') return `
+    <div class="section-header"><div class="section-tag tag-green">Left Shoulder · Progressive Loading</div><h2 class="section-title">Phased return protocol</h2><p class="section-desc">The acute left shoulder follows a criteria-based advancement model (Wilk et al. 2006) — progress when pain is minimal, ROM is adequate, and strength milestones are met. Not on a fixed calendar. Ice and heat protocols evolve with each phase.</p></div>
+    ${PHASES.map(p=>`<div class="phase-card ${p.active?'phase-active':'phase-upcoming'}">
+      <div class="ph-row"><span class="ph-badge ${p.active?'ph-now':'ph-soon'}">${p.badge}</span><span class="ph-title">${p.title}</span></div>
+      <div>${p.items.map(i=>`<div class="ph-item"><span class="ph-dot" style="background:${p.active?'#34d399':'#3a4a5a'}"></span>${i}</div>`).join('')}</div>
+    </div>`).join('')}`;
+
+  if(id==='flags') return `
+    <div class="section-header"><div class="section-tag tag-red">Left Shoulder · Medical Alert</div><h2 class="section-title">When to seek evaluation</h2><p class="section-desc">Given the traumatic mechanism and your confirmed contralateral labral tear history, an MRI arthrogram is the appropriate imaging study if symptoms persist beyond 2–3 weeks of conservative management.</p></div>
+    <div class="rf-card">
+      <div class="rf-hd"><span style="font-size:20px">🚨</span><span class="rf-title">Seek evaluation immediately</span></div>
+      <ul class="rf-list">${RED_IMMEDIATE.map(f=>`<li>${f}</li>`).join('')}</ul>
+    </div>
+    <div class="rf-card warn">
+      <div class="rf-hd"><span style="font-size:20px">⚠️</span><span class="rf-title warn">Seek evaluation within 7–10 days</span></div>
+      <ul class="rf-list warn">${RED_SOON.map(f=>`<li>${f}</li>`).join('')}</ul>
+    </div>
+    ${sourcesHtml([...SOURCES_REHAB,...SOURCES_THERMAL],6)}`;
+
+  return `<div style="color:#5a6a7a;text-align:center;padding:40px;font-family:'DM Mono',monospace;font-size:12px">Select a tab above</div>`;
+}
+
+/* ---- TAB SWITCHING ---- */
+function switchTab(id, btn, colorClass){
+  activeTabId=id;
+  // clear all active states
+  document.querySelectorAll('.tab').forEach(t=>{
+    t.className='tab';
+  });
+  if(btn) btn.classList.add('active-'+colorClass);
+  document.getElementById('content').innerHTML=renderSection(id);
+  updateProgress();
+}
+
+function toggleCard(id){
+  const bd=document.getElementById('bd-'+id);
+  const ico=document.getElementById('ico-'+id);
+  const isHidden=bd.classList.contains('hidden');
+  bd.classList.toggle('hidden',!isHidden);
+  ico.classList.toggle('open',isHidden);
+}
+
+function toggleDone(e,id){
+  e.stopPropagation();
+  completed[id]=!completed[id];
+  updateProgress();
+  const card=document.getElementById('card-'+id);
+  if(card){
+    card.classList.toggle('done',!!completed[id]);
+    const btn=card.querySelector('.chk');
+    if(btn){btn.classList.toggle('checked',!!completed[id]);btn.textContent=completed[id]?'✓':'';}
+  }
+}
+
+function toggleThermal(id){
+  const bd=document.getElementById('tb-'+id);
+  const exp=document.getElementById('texp-'+id);
+  const isOpen=bd.classList.contains('open');
+  bd.classList.toggle('open',!isOpen);
+  exp.classList.toggle('open',!isOpen);
+}
+
+function resetAll(){
+  completed={};
+  updateProgress();
+  document.getElementById('content').innerHTML=renderSection(activeTabId);
+}
+
+function updateProgress(){
+  const count=Object.values(completed).filter(Boolean).length;
+  document.getElementById('prog-label').textContent=`${count} / ${TOTAL} exercises`;
+  document.getElementById('prog-fill').style.width=`${(count/TOTAL)*100}%`;
+}
+
+// INIT
+document.getElementById('content').innerHTML=renderSection('warmup');
+</script>
+</body>
+</html>
