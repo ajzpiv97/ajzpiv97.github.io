@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UK Take-Home &amp; Budget Calculator · 2025/26</title>
+
+  <!-- Bootstrap 5.3 CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Theme tokens ─────────────────────────────────────────── */
+    :root {
+      --bs-body-bg:           #080810;
+      --bs-body-color:        #e2e2f0;
+      --bs-border-color:      rgba(255,255,255,0.09);
+      --bs-card-bg:           rgba(255,255,255,0.035);
+      --bs-card-border-color: rgba(255,255,255,0.09);
+      --accent:    #7c6af7;
+      --accent2:   #a89cf8;
+      --clr-green: #22d3a0;
+      --clr-red:   #f26b6b;
+      --clr-amber: #f5a623;
+      --clr-blue:  #5b9cf6;
+      --dim:       #3f3f5a;
+      --muted:     #7a7a96;
+      --font-head: 'Syne', sans-serif;
+      --font-body: 'Outfit', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bs-body-bg);
+      color: var(--bs-body-color);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background-image:
+        linear-gradient(rgba(124,106,247,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(124,106,247,.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    .page { position: relative; z-index: 1; }
+
+    /* ── Typography helpers ───────────────────────────────────── */
+    .font-head { font-family: var(--font-head); }
+    .font-mono { font-family: var(--font-mono); }
+    .text-dim   { color: var(--dim) !important; }
+    .text-muted-custom { color: var(--muted) !important; }
+
+    /* ── Header ──────────────────────────────────────────────── */
+    .site-header {
+      background: linear-gradient(180deg, #0c0c1e 0%, var(--bs-body-bg) 100%);
+      border-bottom: 1px solid var(--bs-border-color);
+      padding: 44px 24px 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .site-header::after {
+      content: '';
+      position: absolute; top: -60px; left: 50%;
+      transform: translateX(-50%);
+      width: 420px; height: 220px;
+      background: radial-gradient(ellipse, rgba(124,106,247,.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .site-header h1 {
+      font-family: var(--font-head);
+      font-size: clamp(22px, 4vw, 34px);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      color: #fff;
+      line-height: 1.1;
+    }
+
+    /* ── Badges ──────────────────────────────────────────────── */
+    .badge-accent {
+      display: inline-block;
+      background: rgba(124,106,247,.15);
+      border: 1px solid rgba(124,106,247,.3);
+      color: var(--accent2);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      border-radius: 100px;
+      padding: 4px 14px;
+    }
+    .badge-session {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(34,211,160,.08);
+      border: 1px solid rgba(34,211,160,.22);
+      color: var(--clr-green);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      border-radius: 100px;
+      padding: 4px 12px;
+      opacity: 0;
+      transition: opacity .3s;
+    }
+    .btn-clear {
+      background: none;
+      border: 1px solid rgba(34,211,160,.3);
+      color: var(--clr-green);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      border-radius: 100px;
+      padding: 2px 10px;
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .btn-clear:hover { background: rgba(34,211,160,.1); }
+
+    /* ── Cards ───────────────────────────────────────────────── */
+    .card {
+      background: var(--bs-card-bg) !important;
+      border-color: var(--bs-card-border-color) !important;
+      animation: fadeUp .35s ease both;
+    }
+    .card-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--dim);
+      font-weight: 500;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Form / Inputs ───────────────────────────────────────── */
+    .form-control, .input-group-text {
+      background-color: rgba(255,255,255,.04) !important;
+      border-color: rgba(255,255,255,.12) !important;
+      color: var(--bs-body-color) !important;
+    }
+    .form-control:focus {
+      border-color: var(--accent) !important;
+      box-shadow: 0 0 0 3px rgba(124,106,247,.18) !important;
+    }
+    .salary-input {
+      font-family: var(--font-head);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .input-group-text {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--muted) !important;
+    }
+
+    /* ── Loan plan pills ──────────────────────────────────────── */
+    .loan-pill {
+      font-size: 11px;
+      line-height: 1.35;
+      padding: 7px 10px;
+      border-color: rgba(255,255,255,.1) !important;
+      background: rgba(255,255,255,.02) !important;
+      color: var(--muted) !important;
+      transition: all .15s;
+    }
+    .loan-pill:hover {
+      border-color: var(--accent) !important;
+      color: var(--accent2) !important;
+    }
+    .loan-pill.active {
+      border-color: var(--accent) !important;
+      background: rgba(124,106,247,.16) !important;
+      color: var(--accent2) !important;
+      font-weight: 600;
+    }
+
+    /* ── Stat tiles ───────────────────────────────────────────── */
+    .stat-tile {
+      background: rgba(255,255,255,.025);
+      border: 1px solid var(--bs-border-color);
+      border-radius: .5rem;
+      padding: 14px 12px;
+      text-align: center;
+      transition: transform .18s;
+    }
+    .stat-tile:hover { transform: translateY(-2px); }
+    .stat-value {
+      font-family: var(--font-head);
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    .stat-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 5px;
+    }
+
+    /* ── Alert override ───────────────────────────────────────── */
+    .alert-60pct {
+      background: rgba(245,166,35,.08) !important;
+      border-color: rgba(245,166,35,.28) !important;
+      color: #f5b94a !important;
+      font-size: 13px;
+    }
+
+    /* ── Accordion (tax breakdown) ────────────────────────────── */
+    .accordion-item { background: transparent !important; border: none !important; }
+    .accordion-button {
+      background: transparent !important;
+      color: var(--muted) !important;
+      font-family: var(--font-mono) !important;
+      font-size: 11px !important;
+      letter-spacing: .05em !important;
+      padding: 8px 14px !important;
+      border: 1px solid var(--bs-border-color) !important;
+      border-radius: .4rem !important;
+      box-shadow: none !important;
+    }
+    .accordion-button:not(.collapsed) {
+      color: var(--accent2) !important;
+      border-color: var(--accent) !important;
+    }
+    .accordion-button::after { filter: invert(.4) sepia(1) hue-rotate(220deg); }
+    .accordion-body { padding: 12px 0 0; }
+
+    /* ── Breakdown rows ───────────────────────────────────────── */
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      background: rgba(255,255,255,.02);
+      border-radius: 6px;
+      margin-bottom: 4px;
+      font-size: 13px;
+    }
+    .breakdown-row .bl { color: var(--muted); }
+    .breakdown-row .bv { font-family: var(--font-mono); font-weight: 500; }
+
+    /* ── Scenario cards ───────────────────────────────────────── */
+    .scenario-card {
+      cursor: pointer;
+      transition: transform .2s, box-shadow .2s, border-color .2s, background .2s;
+      border-width: 1.5px !important;
+    }
+    .scenario-card:hover, .scenario-card.active {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(0,0,0,.45);
+    }
+    .scenario-icon { font-size: 24px; }
+    .scenario-badge {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    .scenario-name {
+      font-family: var(--font-head);
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .scenario-sub { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+    /* ── Budget rows ──────────────────────────────────────────── */
+    .budget-group-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--dim);
+    }
+    .budget-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 10px;
+      border-radius: 6px;
+      margin-bottom: 4px;
+      transition: background .15s;
+    }
+    .budget-row:hover { background: rgba(255,255,255,.03); }
+    .budget-row.custom-row {
+      background: rgba(124,106,247,.06);
+      border: 1px solid rgba(124,106,247,.2);
+    }
+    .budget-row .b-label { font-size: 13px; color: var(--muted); }
+    .custom-tag {
+      font-size: 9px;
+      color: var(--accent2);
+      font-family: var(--font-mono);
+      letter-spacing: .08em;
+      margin-left: 6px;
+    }
+    .cost-input {
+      width: 80px;
+      background: rgba(255,255,255,.04) !important;
+      border: 1px solid rgba(255,255,255,.1) !important;
+      border-radius: 5px;
+      color: var(--bs-body-color) !important;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      padding: 4px 7px;
+      text-align: right;
+      outline: none;
+      transition: border-color .15s;
+    }
+    .cost-input:focus { border-color: var(--accent) !important; }
+    .cost-prefix {
+      color: var(--dim);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      margin-right: 4px;
+    }
+
+    /* ── Bottom-line tiles ────────────────────────────────────── */
+    .bottom-tile {
+      border-radius: .5rem;
+      padding: 20px 14px;
+      text-align: center;
+      border: 1.5px solid;
+    }
+    .bt-value {
+      font-family: var(--font-head);
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    .bt-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    /* ── Savings box ──────────────────────────────────────────── */
+    .savings-box {
+      background: rgba(34,211,160,.05);
+      border: 1px solid rgba(34,211,160,.16);
+      border-radius: .5rem;
+      padding: 14px 16px;
+    }
+    .savings-title {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: .12em;
+      color: var(--clr-green);
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .savings-value {
+      font-family: var(--font-head);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--bs-body-color);
+    }
+    .savings-sub { font-size: 10px; color: var(--dim); font-family: var(--font-mono); }
+
+    /* ── Spend bar ────────────────────────────────────────────── */
+    .spend-bar {
+      display: flex; height: 10px; border-radius: 6px;
+      overflow: hidden; gap: 1px;
+    }
+    .bar-seg { transition: width .4s ease; }
+    .bar-legend { display: flex; gap: 16px; flex-wrap: wrap; }
+    .legend-item {
+      display: flex; align-items: center; gap: 5px;
+      font-family: var(--font-mono); font-size: 10px; color: var(--muted);
+    }
+    .legend-dot { width: 10px; height: 10px; border-radius: 3px; }
+
+    /* ── Table ────────────────────────────────────────────────── */
+    .table { --bs-table-bg: transparent; }
+    .table th {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--dim);
+      border-color: var(--bs-border-color);
+    }
+    .table td { border-color: rgba(255,255,255,.03); vertical-align: middle; }
+    .table tbody tr { cursor: pointer; transition: background .12s; }
+    .table tbody tr:hover td { background: rgba(255,255,255,.025); }
+    .table tbody tr.active td { background: rgba(124,106,247,.07); }
+
+    /* ── Misc buttons ─────────────────────────────────────────── */
+    .btn-reset {
+      background: none;
+      border: 1px solid rgba(255,255,255,.1);
+      color: var(--accent2);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      letter-spacing: .05em;
+      transition: all .15s;
+    }
+    .btn-reset:hover { border-color: var(--accent); background: rgba(124,106,247,.08); }
+
+    /* ── Spinner hide ─────────────────────────────────────────── */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+    input[type=number] { -moz-appearance: textfield; appearance: textfield; }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ══ HEADER ══════════════════════════════════════════════════ -->
+  <header class="site-header">
+    <span class="badge-accent">2025 / 26 Tax Year · England</span>
+    <h1 class="mt-2 mb-2">Take-Home &amp; Budget Calculator</h1>
+    <p class="mb-3 text-muted-custom" style="font-size:13px;font-weight:300;">
+      Real PAYE · National Insurance · West London costs · 3 lifestyle scenarios
+    </p>
+    <div id="session-banner" class="badge-session">
+      <i class="bi bi-floppy"></i>
+      Session restored
+      <button id="clear-session-btn" class="btn-clear">Clear</button>
+    </div>
+  </header>
+
+  <!-- ══ MAIN ════════════════════════════════════════════════════ -->
+  <div class="container" style="max-width:900px;padding-bottom:64px;">
+
+    <!-- ── Income Inputs ──────────────────────────────────────── -->
+    <div class="card rounded-3 p-4 mt-4">
+      <div class="card-label mb-3">// Your Income</div>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label font-mono text-muted-custom" style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;">
+            Gross Annual Salary
+          </label>
+          <div class="input-group">
+            <span class="input-group-text">£</span>
+            <input type="number" id="salary" class="form-control salary-input"
+                   value="110000" step="1000" min="0" />
+          </div>
+          <div id="salary-hint" class="font-mono mt-1 text-dim" style="font-size:11px;">
+            Monthly gross: £9,167
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label font-mono text-muted-custom" style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;">
+            Pension Contribution
+          </label>
+          <div class="input-group">
+            <input type="number" id="pension" class="form-control salary-input"
+                   value="5" step="0.5" min="0" max="100" />
+            <span class="input-group-text">%</span>
+          </div>
+          <div id="pension-hint" class="font-mono mt-1 text-dim" style="font-size:11px;">
+            £5,500 / year deducted pre-tax
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-3">
+        <label class="form-label font-mono d-block text-muted-custom"
+               style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;">
+          Student Loan Plan
+        </label>
+        <div id="loan-pills" class="d-flex flex-wrap gap-2">
+          <button class="btn loan-pill active" data-plan="none">None</button>
+          <button class="btn loan-pill" data-plan="plan1">Plan 1<br><small style="opacity:.6">pre-Sep 2012</small></button>
+          <button class="btn loan-pill" data-plan="plan2">Plan 2<br><small style="opacity:.6">2012–Jul 2023</small></button>
+          <button class="btn loan-pill" data-plan="plan5">Plan 5<br><small style="opacity:.6">Aug 2023+</small></button>
+          <button class="btn loan-pill" data-plan="plan4">Plan 4<br><small style="opacity:.6">Scottish</small></button>
+          <button class="btn loan-pill" data-plan="pg">Postgrad<br><small style="opacity:.6">Master's/PhD</small></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Tax Summary ────────────────────────────────────────── -->
+    <div class="card rounded-3 p-4 mt-3">
+      <div class="card-label mb-3">// Tax &amp; Deductions</div>
+
+      <div id="marginal-warning"
+           class="alert alert-60pct d-flex align-items-start gap-2 rounded-3 mb-3 hidden">
+        <i class="bi bi-exclamation-triangle-fill flex-shrink-0 mt-1"></i>
+        <span id="marginal-text"></span>
+      </div>
+
+      <div class="row g-2 mb-3">
+        <div class="col-6 col-md-3">
+          <div class="stat-tile" style="border-color:rgba(168,156,248,.2);">
+            <div class="stat-value" style="color:var(--accent2);" id="st-monthly">£0</div>
+            <div class="stat-label">Monthly Take-Home</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-tile" style="border-color:rgba(91,156,246,.2);">
+            <div class="stat-value" style="color:var(--clr-blue);" id="st-annual">£0</div>
+            <div class="stat-label">Annual Net</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-tile" style="border-color:rgba(245,166,35,.2);">
+            <div class="stat-value" style="color:var(--clr-amber);" id="st-rate">0%</div>
+            <div class="stat-label">Effective Rate</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-tile" style="border-color:rgba(242,107,107,.2);">
+            <div class="stat-value" style="color:var(--clr-red);" id="st-deductions">£0</div>
+            <div class="stat-label">Total Deductions</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bootstrap accordion for detailed breakdown -->
+      <div class="accordion" id="breakdownAccordion">
+        <div class="accordion-item">
+          <div class="accordion-header">
+            <button class="accordion-button collapsed" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#breakdownBody"
+                    aria-expanded="false" aria-controls="breakdownBody">
+              <i class="bi bi-receipt me-2"></i>Detailed tax breakdown
+            </button>
+          </div>
+          <div id="breakdownBody" class="accordion-collapse collapse"
+               data-bs-parent="#breakdownAccordion">
+            <div class="accordion-body" id="breakdown-rows"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Scenario Picker ────────────────────────────────────── -->
+    <div class="card rounded-3 p-4 mt-3">
+      <div class="card-label mb-3">// Choose a Budget Scenario</div>
+      <div class="row g-3" id="scenario-grid"></div>
+    </div>
+
+    <!-- ── Budget Detail ─────────────────────────────────────── -->
+    <div class="card rounded-3 p-4 mt-3 hidden" id="budget-card">
+      <div class="card-label mb-1" id="budget-card-title">// Budget Detail</div>
+      <div id="budget-desc" class="rounded-3 p-2 mt-2 mb-3" style="font-size:12px;line-height:1.55;"></div>
+      <p class="text-dim mb-3" style="font-size:11px;">
+        <i class="bi bi-pencil me-1"></i>Edit any value to customise for your situation
+      </p>
+      <div id="budget-categories"></div>
+      <button class="btn-reset mt-2 hidden" id="reset-btn">
+        <i class="bi bi-arrow-counterclockwise me-1"></i>Reset to scenario defaults
+      </button>
+    </div>
+
+    <!-- ── Bottom Line ───────────────────────────────────────── -->
+    <div class="card rounded-3 p-4 mt-3 hidden" id="bottom-card">
+      <div class="card-label mb-3">// Bottom Line</div>
+      <div class="row g-3 mb-3" id="bottom-tiles"></div>
+      <div id="savings-box" class="mb-3 hidden"></div>
+      <div>
+        <div class="font-mono mb-2 text-dim"
+             style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;">
+          Spend Breakdown
+        </div>
+        <div class="spend-bar" id="spend-bar"></div>
+        <div class="bar-legend mt-2" id="bar-legend"></div>
+      </div>
+    </div>
+
+    <!-- ── Comparison Table ──────────────────────────────────── -->
+    <div class="card rounded-3 p-4 mt-3 hidden" id="compare-card">
+      <div class="card-label mb-3">// All Scenario Comparison</div>
+      <div class="table-responsive">
+        <table class="table table-borderless align-middle">
+          <thead>
+            <tr>
+              <th>Scenario</th><th>Rent</th><th>Total Costs</th>
+              <th>Take-Home</th><th>Surplus / Deficit</th><th>Savings Rate</th>
+            </tr>
+          </thead>
+          <tbody id="comp-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── Empty state ───────────────────────────────────────── -->
+    <div class="card rounded-3 p-5 mt-3 text-center hidden" id="empty-card">
+      <i class="bi bi-hand-index-thumb d-block mb-2" style="font-size:32px;color:var(--dim);"></i>
+      <span class="text-dim" style="font-size:14px;">Select a scenario above to see your full budget breakdown</span>
+    </div>
+
+    <!-- ── Footer ────────────────────────────────────────────── -->
+    <p class="text-center font-mono mt-4 text-dim" style="font-size:10px;letter-spacing:.06em;">
+      Based on 2025/26 HMRC rates &nbsp;·&nbsp; Personal Allowance £12,570 &nbsp;·&nbsp;
+      Employee NI 8%/2% &nbsp;·&nbsp; <i class="bi bi-hdd"></i> Saved to local storage
+      &nbsp;·&nbsp; Not financial advice
+    </p>
+
+  </div><!-- /container -->
+</div><!-- /page -->
+
+<!-- Bootstrap 5.3 JS bundle (Popper included) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   UK TAKE-HOME CALCULATOR  ·  2025/26
+   Storage: localStorage  (persists across sessions / browser restarts)
+   Tax logic: HMRC PAYE + Class 1 NI + all 5 Student Loan plans
+════════════════════════════════════════════════════════════════════ */
+
+// ── 2025/26 Tax constants ────────────────────────────────────────
+const TAX = {
+  personalAllowance:       12570,
+  basicRateLimit:          50270,
+  additionalRateThreshold: 125140,
+  basicRate:               0.20,
+  higherRate:              0.40,
+  additionalRate:          0.45,
+  paWithdrawalStart:       100000,
+};
+
+const NI = {
+  primaryThreshold:   12570,
+  upperEarningsLimit: 50270,
+  lowerRate:  0.08,   // 8% between PT and UEL
+  upperRate:  0.02,   // 2% above UEL
+};
+
+const LOAN_PLANS = {
+  none:  { label: "None",               threshold: 0,     rate: 0    },
+  plan1: { label: "Plan 1",            threshold: 26065, rate: 0.09 },
+  plan2: { label: "Plan 2",            threshold: 28470, rate: 0.09 },
+  plan5: { label: "Plan 5",            threshold: 25000, rate: 0.09 },
+  plan4: { label: "Plan 4 (Scottish)", threshold: 32745, rate: 0.09 },
+  pg:    { label: "Postgraduate",      threshold: 21000, rate: 0.06 },
+};
+
+// ── Scenarios ────────────────────────────────────────────────────
+const SCENARIOS = [
+  {
+    id: "lean", label: "Scenario A", title: "Lean & Save",
+    subtitle: "Frugal living, maximum savings rate",
+    description: "Modest 2-bed in Shepherd's Bush / Hammersmith. Minimal dining out, no gym, budget grocery shops. Aggressive savings target.",
+    icon: "📦", color: "#22d3a0",
+    bgColor: "rgba(34,211,160,0.06)", borderColor: "rgba(34,211,160,0.28)",
+    costs: {
+      rent:2500, councilTax:121, energy:100, water:35, broadband:28,
+      tvLicence:15, contents:10, groceries:300, transport:150, diningOut:150,
+      clothing:80, personalCare:50, entertainment:80, subscriptions:30,
+      gym:0, holidays:150, miscellaneous:100,
+    },
+  },
+  {
+    id: "balanced", label: "Scenario B", title: "Comfortable Balance",
+    subtitle: "West London lifestyle, sensible spending",
+    description: "Mid-range 2-bed in Fulham / Notting Hill. Regular dining out, gym, comfortable lifestyle with moderate savings.",
+    icon: "⚖️", color: "#7c6af7",
+    bgColor: "rgba(124,106,247,0.06)", borderColor: "rgba(124,106,247,0.3)",
+    costs: {
+      rent:3200, councilTax:121, energy:115, water:38, broadband:32,
+      tvLicence:15, contents:14, groceries:450, transport:180, diningOut:400,
+      clothing:150, personalCare:80, entertainment:150, subscriptions:60,
+      gym:80, holidays:300, miscellaneous:200,
+    },
+  },
+  {
+    id: "premium", label: "Scenario C", title: "Premium Chelsea",
+    subtitle: "High-end living, full London lifestyle",
+    description: "Premium 2-bed in Chelsea / Kensington. Fine dining, luxury gym, frequent travel — the full West London experience.",
+    icon: "✨", color: "#f5a623",
+    bgColor: "rgba(245,166,35,0.06)", borderColor: "rgba(245,166,35,0.28)",
+    costs: {
+      rent:4500, councilTax:131, energy:130, water:40, broadband:35,
+      tvLicence:15, contents:18, groceries:600, transport:220, diningOut:700,
+      clothing:300, personalCare:150, entertainment:250, subscriptions:90,
+      gym:120, holidays:600, miscellaneous:350,
+    },
+  },
+];
+
+const CATEGORIES = [
+  { key:"rent",          label:"Rent",                   group:"Housing"   },
+  { key:"councilTax",   label:"Council Tax",            group:"Housing"   },
+  { key:"energy",       label:"Energy (gas/elec)",      group:"Housing"   },
+  { key:"water",        label:"Water",                  group:"Housing"   },
+  { key:"broadband",    label:"Broadband",              group:"Housing"   },
+  { key:"tvLicence",    label:"TV Licence",             group:"Housing"   },
+  { key:"contents",     label:"Contents Insurance",     group:"Housing"   },
+  { key:"groceries",    label:"Groceries",              group:"Living"    },
+  { key:"transport",    label:"Transport (TfL/Oyster)", group:"Living"    },
+  { key:"diningOut",    label:"Dining Out",             group:"Living"    },
+  { key:"clothing",     label:"Clothing",               group:"Lifestyle" },
+  { key:"personalCare", label:"Personal Care",          group:"Lifestyle" },
+  { key:"entertainment",label:"Entertainment",          group:"Lifestyle" },
+  { key:"subscriptions",label:"Subscriptions",          group:"Lifestyle" },
+  { key:"gym",          label:"Gym / Fitness",          group:"Lifestyle" },
+  { key:"holidays",     label:"Holidays (monthly avg)", group:"Lifestyle" },
+  { key:"miscellaneous",label:"Miscellaneous",          group:"Lifestyle" },
+];
+
+const GROUPS       = ["Housing", "Living", "Lifestyle"];
+const GROUP_COLORS = { Housing:"#7c6af7", Living:"#22d3a0", Lifestyle:"#f5a623" };
+
+// ══════════════════════════════════════════════════════════════════
+//  localStorage LAYER
+//  Key: "uk_calc_v1"  — bump suffix if schema changes to avoid
+//  parsing stale payloads from old versions of the file.
+// ══════════════════════════════════════════════════════════════════
+const LS_KEY = "uk_calc_v1";
+
+/**
+ * Write the full state object to localStorage.
+ * Called synchronously after every mutation so the store is always fresh.
+ * Wrapped in try/catch to survive browsers that block storage
+ * (incognito with strict settings, storage quota exceeded, etc.).
+ */
+function persist() {
+  try {
+    localStorage.setItem(LS_KEY, JSON.stringify(state));
+  } catch (e) {
+    console.warn("[uk-calc] localStorage.setItem failed:", e);
+  }
+}
+
+/**
+ * Read and validate state from localStorage.
+ * Each field is individually validated — a corrupt or schema-mismatched
+ * payload will have bad fields replaced with safe defaults rather than
+ * crashing the whole load.  The validCostKeys set ensures an old payload
+ * can never inject arbitrary keys into the budget UI.
+ *
+ * Returns { data, wasRestored } where wasRestored is true only when a
+ * non-empty, parseable key existed in localStorage.
+ */
+function loadFromStorage() {
+  const DEFAULTS = {
+    salary: 110000, pension: 5, loanPlan: "none",
+    activeScenario: null, customCosts: {}, showBreakdown: false,
+  };
+
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return { data: DEFAULTS, wasRestored: false };
+
+    const p = JSON.parse(raw);
+
+    // Validate customCosts: key must be a real category, value must be >= 0 number
+    const validCostKeys = new Set(CATEGORIES.map(c => c.key));
+    const customCosts   = {};
+    if (p.customCosts && typeof p.customCosts === "object") {
+      for (const [k, v] of Object.entries(p.customCosts)) {
+        if (validCostKeys.has(k) && typeof v === "number" && v >= 0) {
+          customCosts[k] = v;
+        }
+      }
+    }
+
+    return {
+      data: {
+        salary:
+          typeof p.salary === "number" && p.salary >= 0
+            ? p.salary : DEFAULTS.salary,
+        pension:
+          typeof p.pension === "number" && p.pension >= 0 && p.pension <= 100
+            ? p.pension : DEFAULTS.pension,
+        loanPlan:
+          p.loanPlan in LOAN_PLANS ? p.loanPlan : DEFAULTS.loanPlan,
+        activeScenario:
+          p.activeScenario === null || SCENARIOS.some(s => s.id === p.activeScenario)
+            ? p.activeScenario : DEFAULTS.activeScenario,
+        customCosts,
+        showBreakdown:
+          typeof p.showBreakdown === "boolean"
+            ? p.showBreakdown : DEFAULTS.showBreakdown,
+      },
+      wasRestored: true,
+    };
+  } catch (e) {
+    console.warn("[uk-calc] localStorage parse failed:", e);
+    return { data: DEFAULTS, wasRestored: false };
+  }
+}
+
+/** Remove the localStorage key and reset state to factory defaults. */
+function clearStorage() {
+  try { localStorage.removeItem(LS_KEY); } catch (e) { /* silent */ }
+  state = {
+    salary: 110000, pension: 5, loanPlan: "none",
+    activeScenario: null, customCosts: {}, showBreakdown: false,
+  };
+}
+
+// ── State — initialised from localStorage on page load ───────────
+const { data: _saved, wasRestored: _wasRestored } = loadFromStorage();
+let state = _saved;
+
+// ══════════════════════════════════════════════════════════════════
+//  TAX ENGINE  (pure — no DOM side-effects)
+// ══════════════════════════════════════════════════════════════════
+function calcTax(gross, loanPlan, pensionPct) {
+  const pensionAmt = gross * (pensionPct / 100);
+  const adjGross   = gross - pensionAmt;
+
+  // Personal Allowance taper: £1 withdrawn per £2 of adj. income above £100k
+  let pa = TAX.personalAllowance;
+  if (adjGross > TAX.paWithdrawalStart) {
+    pa = Math.max(0, pa - Math.floor((adjGross - TAX.paWithdrawalStart) / 2));
+  }
+
+  const taxable = Math.max(0, adjGross - pa);
+  let incomeTax = 0;
+
+  if (adjGross <= TAX.basicRateLimit) {
+    incomeTax = taxable * TAX.basicRate;
+  } else if (adjGross <= TAX.additionalRateThreshold) {
+    const basic  = TAX.basicRateLimit - pa;
+    const higher = taxable - basic;
+    incomeTax    = basic * TAX.basicRate + higher * TAX.higherRate;
+  } else {
+    const basic      = Math.max(0, TAX.basicRateLimit - pa);
+    const higher     = Math.max(0, TAX.additionalRateThreshold - TAX.basicRateLimit);
+    const additional = Math.max(0, taxable - basic - higher);
+    incomeTax        = basic * TAX.basicRate + higher * TAX.higherRate + additional * TAX.additionalRate;
+  }
+
+  let ni = 0;
+  if (gross > NI.upperEarningsLimit) {
+    ni = (NI.upperEarningsLimit - NI.primaryThreshold) * NI.lowerRate
+       + (gross - NI.upperEarningsLimit) * NI.upperRate;
+  } else if (gross > NI.primaryThreshold) {
+    ni = (gross - NI.primaryThreshold) * NI.lowerRate;
+  }
+
+  const loan = LOAN_PLANS[loanPlan];
+  const studentLoan = adjGross > loan.threshold
+    ? (adjGross - loan.threshold) * loan.rate : 0;
+
+  const totalDeductions = incomeTax + ni + studentLoan + pensionAmt;
+  const annualNet       = gross - totalDeductions;
+
+  return {
+    gross,
+    incomeTax:       Math.round(incomeTax),
+    ni:              Math.round(ni),
+    studentLoan:     Math.round(studentLoan),
+    pension:         Math.round(pensionAmt),
+    totalDeductions: Math.round(totalDeductions),
+    annualNet:       Math.round(annualNet),
+    monthlyNet:      Math.round(annualNet / 12),
+    effectiveRate:   gross > 0 ? ((totalDeductions / gross) * 100).toFixed(1) : "0.0",
+    pa,
+  };
+}
+
+// ── Helpers ───────────────────────────────────────────────────────
+const fmt     = n => `£${Math.abs(Math.round(n)).toLocaleString("en-GB")}`;
+const fmtSign = n => (n >= 0 ? "+" : "–") + fmt(n);
+const el      = id => document.getElementById(id);
+
+function getEffectiveCosts(scenario) {
+  const out = {};
+  CATEGORIES.forEach(({ key }) => {
+    out[key] = state.customCosts[key] !== undefined
+      ? state.customCosts[key]
+      : scenario.costs[key];
+  });
+  return out;
+}
+const sumCosts = costs => Object.values(costs).reduce((a, b) => a + b, 0);
+
+// ══════════════════════════════════════════════════════════════════
+//  RENDER FUNCTIONS
+// ══════════════════════════════════════════════════════════════════
+
+function renderTaxStats(tax) {
+  el("st-monthly").textContent    = fmt(tax.monthlyNet);
+  el("st-annual").textContent     = fmt(tax.annualNet);
+  el("st-rate").textContent       = tax.effectiveRate + "%";
+  el("st-deductions").textContent = fmt(tax.totalDeductions);
+  el("salary-hint").textContent   = `Monthly gross: ${fmt(state.salary / 12)}`;
+  el("pension-hint").textContent  = `${fmt(state.salary * state.pension / 100)} / year deducted pre-tax`;
+
+  const warn = el("marginal-warning");
+  const txt  = el("marginal-text");
+  if (state.salary > 100000 && state.salary < 125140) {
+    txt.textContent = "You're in the 60% effective marginal rate zone (£100k–£125,140). Personal Allowance tapers £1 per £2 above £100k — a £10k raise here nets far less than expected. Consider raising pension contributions to pull adjusted net income below £100k.";
+    warn.classList.remove("hidden");
+  } else if (state.salary >= 125140) {
+    txt.textContent = "Your Personal Allowance is fully withdrawn. Income above £125,140 is taxed at 45%.";
+    warn.classList.remove("hidden");
+  } else {
+    warn.classList.add("hidden");
+  }
+}
+
+function renderBreakdown(tax) {
+  const plan = LOAN_PLANS[state.loanPlan];
+  const rows = [
+    { label: "Gross Salary",                 value: fmt(tax.gross),           color: "var(--bs-body-color)" },
+    { label: "Income Tax",                   value: `–${fmt(tax.incomeTax)}`, color: "var(--clr-red)"       },
+    { label: "National Insurance (8% / 2%)", value: `–${fmt(tax.ni)}`,        color: "#f97316"              },
+    ...(tax.studentLoan > 0
+      ? [{ label: `Student Loan (${plan.label})`, value: `–${fmt(tax.studentLoan)}`, color: "var(--clr-amber)" }]
+      : []),
+    ...(tax.pension > 0
+      ? [{ label: `Pension (${state.pension}%)`, value: `–${fmt(tax.pension)}`, color: "#a78bfa" }]
+      : []),
+    { label: "Annual Net Pay",  value: fmt(tax.annualNet),  color: "var(--clr-green)", bold: true },
+    { label: "Monthly Net Pay", value: fmt(tax.monthlyNet), color: "var(--clr-green)", bold: true },
+  ];
+  el("breakdown-rows").innerHTML = rows.map(r => `
+    <div class="breakdown-row">
+      <span class="bl">${r.label}</span>
+      <span class="bv" style="color:${r.color};${r.bold ? "font-weight:700;" : ""}">${r.value}</span>
+    </div>`).join("");
+}
+
+function renderScenarios() {
+  el("scenario-grid").innerHTML = SCENARIOS.map(s => `
+    <div class="col-12 col-md-4">
+      <div class="card scenario-card h-100 p-3 ${state.activeScenario === s.id ? "active" : ""}"
+           data-scenario="${s.id}"
+           style="border-color:${state.activeScenario === s.id ? s.color : "rgba(255,255,255,.09)"};
+                  background:${state.activeScenario === s.id ? s.bgColor : "rgba(255,255,255,.025)"};">
+        <div class="scenario-icon mb-2">${s.icon}</div>
+        <div class="scenario-badge mb-1" style="color:${s.color};">${s.label}</div>
+        <div class="scenario-name mb-1">${s.title}</div>
+        <div class="scenario-sub">${s.subtitle}</div>
+      </div>
+    </div>`).join("");
+
+  el("scenario-grid").querySelectorAll(".scenario-card").forEach(card => {
+    card.addEventListener("click", () => {
+      state.activeScenario = card.dataset.scenario;
+      state.customCosts    = {};
+      persist();
+      renderAll();
+    });
+  });
+}
+
+function renderBudgetDetail(scenario, tax) {
+  el("budget-card").classList.remove("hidden");
+  el("budget-card-title").textContent = `// ${scenario.icon} ${scenario.title} — Monthly Budget`;
+
+  const desc = el("budget-desc");
+  desc.textContent      = scenario.description;
+  desc.style.background = scenario.bgColor;
+  desc.style.border     = `1px solid ${scenario.borderColor}`;
+  desc.style.color      = scenario.color;
+
+  const eff       = getEffectiveCosts(scenario);
+  const hasCustom = Object.keys(state.customCosts).length > 0;
+  const resetBtn  = el("reset-btn");
+  hasCustom ? resetBtn.classList.remove("hidden") : resetBtn.classList.add("hidden");
+
+  let html = "";
+  GROUPS.forEach(group => {
+    const items      = CATEGORIES.filter(c => c.group === group);
+    const groupTotal = items.reduce((s, { key }) => s + (eff[key] || 0), 0);
+
+    html += `
+      <div class="mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="budget-group-label">${group}</span>
+          <span class="font-mono text-muted-custom" style="font-size:11px;">${fmt(groupTotal)} / mo</span>
+        </div>`;
+
+    items.forEach(({ key, label }) => {
+      const isCustom = state.customCosts[key] !== undefined;
+      html += `
+        <div class="budget-row ${isCustom ? "custom-row" : ""}" id="row-${key}">
+          <span class="b-label">
+            ${label}
+            ${isCustom ? '<span class="custom-tag">✎ custom</span>' : ""}
+          </span>
+          <div class="d-flex align-items-center">
+            <span class="cost-prefix">£</span>
+            <input class="cost-input" type="number" id="cost-${key}"
+                   value="${eff[key]}" min="0" data-key="${key}" />
+          </div>
+        </div>`;
+    });
+
+    html += `</div>`;
+  });
+
+  el("budget-categories").innerHTML = html;
+
+  el("budget-categories").querySelectorAll(".cost-input").forEach(input => {
+    input.addEventListener("input", () => {
+      const key = input.dataset.key;
+      const val = Math.max(0, parseInt(input.value) || 0);
+      state.customCosts[key] = val;
+      persist();
+      renderBottomLine(tax);
+      renderCompare(tax);
+      const row = el(`row-${key}`);
+      row.classList.add("custom-row");
+      const lbl = row.querySelector(".b-label");
+      if (!lbl.querySelector(".custom-tag")) {
+        lbl.insertAdjacentHTML("beforeend", '<span class="custom-tag">✎ custom</span>');
+      }
+      Object.keys(state.customCosts).length > 0
+        ? resetBtn.classList.remove("hidden")
+        : resetBtn.classList.add("hidden");
+    });
+  });
+}
+
+function renderBottomLine(tax) {
+  const card     = el("bottom-card");
+  const scenario = SCENARIOS.find(s => s.id === state.activeScenario);
+  if (!scenario) { card.classList.add("hidden"); return; }
+  card.classList.remove("hidden");
+
+  const eff     = getEffectiveCosts(scenario);
+  const total   = sumCosts(eff);
+  const surplus = tax.monthlyNet - total;
+
+  el("bottom-tiles").innerHTML = [
+    { label: "Monthly Take-Home",       value: fmt(tax.monthlyNet), color: "var(--accent2)"  },
+    { label: "Total Monthly Outgoings", value: fmt(total),          color: "var(--clr-red)"  },
+    {
+      label: surplus >= 0 ? "Monthly Surplus" : "Monthly Shortfall",
+      value: fmtSign(surplus),
+      color: surplus >= 0 ? "var(--clr-green)" : "var(--clr-red)",
+    },
+  ].map(t => `
+    <div class="col-12 col-md-4">
+      <div class="bottom-tile" style="background:${t.color}18;border-color:${t.color}38;">
+        <div class="bt-value" style="color:${t.color};">${t.value}</div>
+        <div class="bt-label">${t.label}</div>
+      </div>
+    </div>`).join("");
+
+  const savBox = el("savings-box");
+  if (surplus > 0) {
+    savBox.classList.remove("hidden");
+    savBox.innerHTML = `
+      <div class="savings-box">
+        <div class="savings-title"><i class="bi bi-piggy-bank me-1"></i>Savings Potential</div>
+        <div class="row g-2 text-center">
+          ${[["100%", surplus*12], ["50%", surplus*6], ["25%", surplus*3]].map(([pct, val]) => `
+            <div class="col-4">
+              <div class="savings-value">${fmt(val)}</div>
+              <div class="savings-sub mt-1">Annual @ ${pct} saved</div>
+            </div>`).join("")}
+        </div>
+      </div>`;
+  } else {
+    savBox.classList.add("hidden");
+    savBox.innerHTML = "";
+  }
+
+  // Spend bar
+  const bar        = el("spend-bar");
+  const legend     = el("bar-legend");
+  const groupData  = GROUPS.map(group => ({
+    group,
+    total: CATEGORIES.filter(c => c.group === group)
+                     .reduce((s, { key }) => s + (eff[key] || 0), 0),
+  }));
+
+  bar.innerHTML = groupData.map(({ group, total: gt }) => {
+    const pct = tax.monthlyNet > 0 ? (gt / tax.monthlyNet) * 100 : 0;
+    return `<div class="bar-seg" style="width:${pct}%;background:${GROUP_COLORS[group]};"></div>`;
+  }).concat([`
+    <div class="bar-seg" style="flex:1;background:${
+      surplus >= 0 ? "rgba(34,211,160,.3)" : "rgba(242,107,107,.3)"};"></div>`,
+  ]).join("");
+
+  legend.innerHTML = [
+    ...GROUPS.map(g =>
+      `<div class="legend-item"><div class="legend-dot" style="background:${GROUP_COLORS[g]};"></div>${g}</div>`),
+    `<div class="legend-item"><div class="legend-dot" style="background:${
+      surplus >= 0 ? "rgba(34,211,160,.5)" : "rgba(242,107,107,.5)"};"></div>${
+      surplus >= 0 ? "Surplus" : "Shortfall"}</div>`,
+  ].join("");
+}
+
+function renderCompare(tax) {
+  const card     = el("compare-card");
+  const scenario = SCENARIOS.find(s => s.id === state.activeScenario);
+  if (!scenario) { card.classList.add("hidden"); return; }
+  card.classList.remove("hidden");
+
+  el("comp-body").innerHTML = SCENARIOS.map(s => {
+    const eff    = getEffectiveCosts(s);
+    const total  = sumCosts(eff);
+    const surp   = tax.monthlyNet - total;
+    const savPct = tax.monthlyNet > 0 ? ((surp / tax.monthlyNet) * 100).toFixed(0) : 0;
+    return `
+      <tr class="${s.id === state.activeScenario ? "active" : ""}" data-scenario="${s.id}">
+        <td><span style="color:${s.color};font-weight:700;">${s.icon} ${s.title}</span></td>
+        <td class="font-mono text-muted-custom">${fmt(s.costs.rent)}</td>
+        <td class="font-mono text-muted-custom">${fmt(total)}</td>
+        <td class="font-mono" style="color:var(--accent2);font-weight:600;">${fmt(tax.monthlyNet)}</td>
+        <td class="font-mono" style="color:${surp >= 0 ? "var(--clr-green)" : "var(--clr-red)"};font-weight:700;">${fmt(surp)}</td>
+        <td class="font-mono" style="color:${surp >= 0 ? "var(--clr-green)" : "var(--clr-red)"};">${surp >= 0 ? savPct+"%" : "—"}</td>
+      </tr>`;
+  }).join("");
+
+  el("comp-body").querySelectorAll("tr").forEach(row => {
+    row.addEventListener("click", () => {
+      state.activeScenario = row.dataset.scenario;
+      state.customCosts    = {};
+      persist();
+      renderAll();
+    });
+  });
+}
+
+// ── Master render ─────────────────────────────────────────────────
+function renderAll() {
+  const tax = calcTax(state.salary, state.loanPlan, state.pension);
+  renderTaxStats(tax);
+  renderBreakdown(tax);
+  renderScenarios();
+
+  const scenario = SCENARIOS.find(s => s.id === state.activeScenario);
+  if (scenario) {
+    el("empty-card").classList.add("hidden");
+    renderBudgetDetail(scenario, tax);
+    renderBottomLine(tax);
+    renderCompare(tax);
+  } else {
+    el("budget-card").classList.add("hidden");
+    el("bottom-card").classList.add("hidden");
+    el("compare-card").classList.add("hidden");
+    el("empty-card").classList.remove("hidden");
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════
+//  EVENT WIRING
+// ══════════════════════════════════════════════════════════════════
+el("salary").addEventListener("input", e => {
+  state.salary = parseFloat(e.target.value) || 0;
+  persist(); renderAll();
+});
+
+el("pension").addEventListener("input", e => {
+  state.pension = Math.min(100, Math.max(0, parseFloat(e.target.value) || 0));
+  persist(); renderAll();
+});
+
+el("loan-pills").querySelectorAll(".loan-pill").forEach(btn => {
+  btn.addEventListener("click", () => {
+    state.loanPlan = btn.dataset.plan;
+    el("loan-pills").querySelectorAll(".loan-pill").forEach(p => p.classList.remove("active"));
+    btn.classList.add("active");
+    persist(); renderAll();
+  });
+});
+
+// Bootstrap accordion fires collapse events — keep showBreakdown in sync
+el("breakdownBody").addEventListener("show.bs.collapse", () => {
+  state.showBreakdown = true;
+  renderBreakdown(calcTax(state.salary, state.loanPlan, state.pension));
+  persist();
+});
+el("breakdownBody").addEventListener("hide.bs.collapse", () => {
+  state.showBreakdown = false;
+  persist();
+});
+
+el("reset-btn").addEventListener("click", () => {
+  state.customCosts = {};
+  persist(); renderAll();
+});
+
+el("clear-session-btn").addEventListener("click", () => {
+  clearStorage();
+  // Reset DOM to defaults
+  el("salary").value  = state.salary;
+  el("pension").value = state.pension;
+  el("loan-pills").querySelectorAll(".loan-pill").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.plan === state.loanPlan);
+  });
+  // Collapse breakdown if currently open
+  bootstrap.Collapse.getOrCreateInstance(el("breakdownBody"), { toggle: false }).hide();
+  el("session-banner").style.opacity = "0";
+  renderAll();
+});
+
+// ══════════════════════════════════════════════════════════════════
+//  BOOT  — hydrate DOM from (possibly restored) state, then render
+// ══════════════════════════════════════════════════════════════════
+(function boot() {
+  el("salary").value  = state.salary;
+  el("pension").value = state.pension;
+
+  // Sync loan pills to restored plan
+  el("loan-pills").querySelectorAll(".loan-pill").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.plan === state.loanPlan);
+  });
+
+  // Re-open accordion if it was open in the last session
+  if (state.showBreakdown) {
+    bootstrap.Collapse.getOrCreateInstance(el("breakdownBody"), { toggle: false }).show();
+  }
+
+  // Show "Session restored" banner with a brief fade-in delay
+  if (_wasRestored) {
+    setTimeout(() => { el("session-banner").style.opacity = "1"; }, 150);
+  }
+
+  renderAll();
+  persist(); // write key on very first load so it always exists
+})();
+</script>
+</body>
+</html>
